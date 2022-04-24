@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)http://epaperpress.com/lexandyacc/emb.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="emb_files/format.css" type=text/css rel=stylesheet><LINK 
+href="emb_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="emb_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Embedded Actions</H1>
+<P>Rules in yacc may contain embedded actions:</P><PRE class=icode>list: item1 { do_item1($1); } item2 { do_item2($3); } item3
+</PRE>
+<P>Note that the actions take a slot in the stack, so <CODE>do_item2</CODE> must 
+use <CODE>$3</CODE> to reference <CODE>item2</CODE>. Actually, this grammar is 
+transformed by yacc into the following:</P><PRE class=icode>list: item1 _rule01 item2 _rule02 item3
+_rule01: { do_item1($0); }
+_rule02: { do_item2($0); }
+</PRE></BODY></HTML>

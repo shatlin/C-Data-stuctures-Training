@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)http://epaperpress.com/lexandyacc/sym.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="sym_files/format.css" type=text/css rel=stylesheet><LINK 
+href="sym_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="sym_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Reserved Words</H1>
+<P>If your program has a large collection of reserved words, it is more 
+efficient to let lex simply match a string, and determine in your own code 
+whether it is a variable or reserved word. For example, instead of coding </P><PRE class=icode>"if"            return IF;
+"then"          return THEN;
+"else"          return ELSE;
+
+{letter}({letter}|{digit})*  {
+         yylval.id = symLookup(yytext);
+         return IDENTIFIER;
+     }
+</PRE>
+<P>where <CODE>symLookup</CODE> returns an index into the symbol table, it is 
+better to detect reserved words and identifiers simultaneously, as follows:</P><PRE class=icode>{letter}({letter}|{digit})*  {
+         int i;
+
+         if ((i = resWord(yytext)) != 0)
+             return (i);
+         yylval.id = symLookup(yytext);
+         return (IDENTIFIER);
+     }
+</PRE>
+<P>This technique significantly reduces the number of states required, and 
+results in smaller scanner tables. </P></BODY></HTML>

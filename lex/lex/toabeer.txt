@@ -1,0 +1,25 @@
+Hi Abeer,
+             The files are to be in three folders in c drive.
+when you extract the code.zip it will give you three folders stack,treee,and twodarr.
+Put these folders in c drive and run the program
+           i have done these programs using Turbo c++.
+       if u intend to keep these files in different location,then you have to change the directory in the headers.
+
+for example I might have written
+#include "c:\twodarr\twodarr.h".
+
+change such lines as required.
+
+In stack and tree programs,  I made provisions for each node to store either one integer or two integers.
+
+In stack program, i used the twodarry abstract data type to store two integers in each node.
+
+There are two test programs for Array program.
+
+Any questions, just SMS me,009739266243
+and we shall discuss it.Give me 1 hour to come online.I dont have net at home, I have to come to a net cafe .
+
+Hope you find the codes easy to understand.
+
+regards,
+Shatlin Denistan.

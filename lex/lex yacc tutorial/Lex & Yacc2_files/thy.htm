@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)http://epaperpress.com/lexandyacc/thy.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="thy_files/format.css" type=text/css rel=stylesheet><LINK 
+href="thy_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="thy_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Yacc Theory</H1>
+<P>Grammars for yacc are described using a variant of Backus Naur Form (BNF). 
+This technique was pioneered by John Backus and Peter Naur, and used to describe 
+ALGOL60. A BNF grammar can be used to express <I>context-free</I> languages. 
+Most constructs in modern programming languages can be represented in BNF. For 
+example, the grammar for an expression that multiplies and adds numbers is </P><PRE class=icode>1    E -&gt; E + E
+2    E -&gt; E * E
+3    E -&gt; id
+</PRE>
+<P>Three productions have been specified. Terms that appear on the left-hand 
+side (lhs) of a production, such as <CODE>E</CODE>, are nonterminals. Terms such 
+as <CODE>id</CODE> (identifier) are terminals (tokens returned by lex) and only 
+appear on the right-hand side (rhs) of a production. This grammar specifies that 
+an expression may be the sum of two expressions, the product of two expressions, 
+or an identifier. We can use this grammar to generate expressions:</P><PRE class=icode>E -&gt; E * E             (r2)
+  -&gt; E * z             (r3) 
+  -&gt; E + E * z         (r1)
+  -&gt; E + y * z         (r3)
+  -&gt; x + y * z         (r3)
+</PRE>
+<P>At each step we expanded a term, replacing the lhs of a production with the 
+corresponding rhs. The numbers on the right indicate which rule applied. To 
+parse an expression, we actually need to do the reverse operation. Instead of 
+starting with a single nonterminal (start symbol) and generating an expression 
+from a grammar, we need to <I>reduce</I> an expression to a single nonterminal. 
+This is known as <I>bottom-up</I> or <I>shift-reduce</I> parsing, and uses a 
+stack for storing terms. Here is the same derivation, but in reverse order:</P><PRE class=icode> 1   . x + y * z     shift
+ 2   x . + y * z     reduce(r3)
+ 3   E . + y * z     shift
+ 4   E + . y * z     shift
+ 5   E + y . * z     reduce(r3)
+ 6   E + E . * z     shift
+ 7   E + E * . z     shift
+ 8   E + E * z .     reduce(r3)
+ 9   E + E * E .     reduce(r2)   emit multiply
+10   E + E .         reduce(r1)   emit add
+11   E .             accept
+</PRE>
+<P>Terms to the left of the dot are on the stack, while remaining input is to 
+the right of the dot. We start by shifting tokens onto the stack. When the top 
+of the stack matches the rhs of a production, we replace the matched tokens on 
+the stack with the lhs of the production. Conceptually, the matched tokens of 
+the rhs are popped off the stack, and the lhs of the production is pushed on the 
+stack. The matched tokens are known as a <I>handle</I>, and we are 
+<I>reducing</I> the handle to the lhs of the production. This process continues 
+until we have shifted all input to the stack, and only the starting nonterminal 
+remains on the stack. In step 1 we shift the <CODE>x</CODE> to the stack. Step 2 
+applies rule r3 to the stack, changing <CODE>x</CODE> to <CODE>E</CODE>. We 
+continue shifting and reducing, until a single nonterminal, the start symbol, 
+remains in the stack. In step 9, when we reduce rule r2, we emit the multiply 
+instruction. Similarly, the add instruction is emitted in step 10. Thus, 
+multiply has a higher precedence than addition. 
+<P>Consider, however, the shift at step 6. Instead of shifting, we could have 
+reduced, applying rule r1. This would result in addition having a higher 
+precedence than multiplication. This is known as a <I>shift-reduce</I> conflict. 
+Our grammar is <I>ambiguous</I>, as there is more than one possible derivation 
+that will yield the expression. In this case, operator precedence is affected. 
+As another example, associativity in the rule</P><PRE class=icode>E -&gt; E + E
+</PRE>
+<P>is ambiguous, for we may recurse on the left or the right. To remedy the 
+situation, we could rewrite the grammar, or supply yacc with directives that 
+indicate which operator has precedence. The latter method is simpler, and will 
+be demonstrated in the practice section. 
+<P>The following grammar has a <I>reduce-reduce</I> conflict. With an 
+<CODE>id</CODE> on the stack, we may reduce to <CODE>T</CODE>, or reduce to 
+<CODE>E</CODE>.</P><PRE class=icode>E -&gt; T
+E -&gt; id
+T -&gt; id
+</PRE>
+<P>Yacc takes a default action when there is a conflict. For shift-reduce 
+conflicts, yacc will shift. For reduce-reduce conflicts, it will use the first 
+rule in the listing. It also issues a warning message whenever a conflict 
+exists. The warnings may be suppressed by making the grammar unambiguous. 
+Several methods for removing ambiguity will be presented in subsequent sections. 
+</P></BODY></HTML>

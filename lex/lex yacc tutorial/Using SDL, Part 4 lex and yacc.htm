@@ -1,0 +1,1058 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0057)http://www-106.ibm.com/developerworks/library/l-pirates4/ -->
+<HTML xmlns:fo = "http://www.w3.org/1999/XSL/Format"><HEAD><TITLE>Using SDL, Part 4: lex and yacc</TITLE><!--XSLT stylesheet used to transform this file:  dw-document-html-2.2.xsl-->
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+<META http-equiv=PICS-Label 
+content='(PICS-1.1&#13;&#10;    "http://www.icra.org/ratingsv02.html" l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1)&#13;&#10;    "http://www.rsac.org/ratingsv01.html" l gen true r (n 0 s 0 v 0 l 0)&#13;&#10;    "http://www.classify.org/safesurf/" l gen true r (SS~~000 1))'>
+<META http-equiv=Expires content=0>
+<META 
+content="Linux, operating systems, Linux news, open source, Linux papers, Linux information, Linux articles, Linux whitepapers, IBM" 
+name=KEYWORDS>
+<META content=20000605 name="LAST UPDATED">
+<META content="Renee McAteer" name="LAST UPDATED BY">
+<META 
+content="In this installment we look at two useful tools in the arsenal of any Linux programmer: lex and yacc. These tools have enabled us to easily build the scripting language and GUI framework that we used in Pirates Ho!, our SDL-based Linux game." 
+name=ABSTRACT>
+<META 
+content="In this installment we look at two useful tools in the arsenal of any Linux programmer: lex and yacc. These tools have enabled us to easily build the scripting language and GUI framework that we used in Pirates Ho!, our SDL-based Linux game." 
+name=DESCRIPTION>
+<META content="Using SDL, Part 4: lex and yacc" name=TITLE>
+<META 
+content=https://www-136.ibm.com/developerworks/secure/feedback.jsp?domain=developerworks 
+name=OWNER>
+<META scheme=iso8601 content=2000-5-1 name=DC.Date>
+<META scheme=rfc1766 content=en-us name=DC.Language>
+<META content=zz name=IBM.Country>
+<META content=Public name=SECURITY>
+<META content="Copyright (c) 2000 by IBM Corporation" name=DC.Rights>
+<META content=index,follow name=ROBOTS>
+<SCRIPT language=JavaScript src="Using SDL, Part 4 lex and yacc_files/style.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Using SDL, Part 4 lex and yacc_files/spinbox.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT language=JavaScript type=text/javascript>var title = "Using SDL, Part 4: lex and yacc"; </SCRIPT>
+
+<SCRIPT language=JavaScript type=text/javascript>var forumURL = ""; </SCRIPT>
+
+<SCRIPT language=JavaScript 
+type=text/javascript>var contentAreaList = "linux"; </SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Using SDL, Part 4 lex and yacc_files/forumwindow.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT language=JavaScript type=text/javascript>var emailAbstract = "In this installment we look at two useful tools in the arsenal of any Linux programmer: lex and yacc. These tools have enabled us to easily build the scripting language and GUI framework that we used in Pirates Ho!, our SDL-based Linux game."; </SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Using SDL, Part 4 lex and yacc_files/grabtitle.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Using SDL, Part 4 lex and yacc_files/emailfriend2.js" 
+type=text/javascript></SCRIPT>
+
+<SCRIPT language=JavaScript type=text/javascript>var demoURL = ""; </SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Using SDL, Part 4 lex and yacc_files/demowindow.js" 
+type=text/javascript></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff leftMargin=2 topMargin=2 marginheight="2" marginwidth="2">
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=tbgc width=160><A 
+      href="http://www-106.ibm.com/developerworks/cgi-bin/click.cgi?url=http://www.ibm.com/&amp;origin=dwheader"><IMG 
+      height=47 alt=IBM src="Using SDL, Part 4 lex and yacc_files/ibm-logo.gif" 
+      width=160 border=0></A></TD>
+    <TD class=tbgdw width=90><A 
+      href="http://www-106.ibm.com/developerworks/library/l-pirates4/#main"><IMG 
+      height=1 alt="Skip to main content" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=70 border=0></A></TD>
+    <TD class=tbgc vAlign=top align=right width="100%">
+      <TABLE cellSpacing=0 cellPadding=0 border=0>
+        <FORM id=form1 name=form1 
+        action=http://www-106.ibm.com/search/searchResults.jsp method=get><INPUT 
+        type=hidden value=1 name=searchType> <INPUT type=hidden value=dW 
+        name=searchSite> 
+        <TBODY>
+        <TR>
+          <TD colSpan=7><IMG height=4 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=390 
+          border=0></TD></TR>
+        <TR vAlign=center nowrap>
+          <TD class=dwsearch24><B>Search for:</B>&nbsp;</TD>
+          <TD><INPUT class=dwsearch maxLength=100 size=18 name=query 
+            height="15"></FONT></TD>
+          <TD class=dwsearch24>&nbsp;<B>within</B>&nbsp;</TD>
+          <TD class=dwsearch><SELECT class=dwsearch name=searchScope> 
+              <OPTION value=dW selected>All of dW</OPTION> <OPTION 
+              value=dW>-----------------</OPTION> <OPTION 
+              value=db2>&nbsp;&nbsp;DB2</OPTION> <OPTION 
+              value=eserver>&nbsp;&nbsp;eServer</OPTION> <OPTION 
+              value=lotus>&nbsp;&nbsp;Lotus</OPTION> <OPTION 
+              value=rdd>&nbsp;&nbsp;Rational</OPTION> <OPTION 
+              value=tivoli>&nbsp;&nbsp;Tivoli</OPTION> <OPTION 
+              value=WSDD>&nbsp;&nbsp;WebSphere</OPTION> <OPTION 
+              value=dW>-----------------</OPTION> <OPTION 
+              value=acZ>&nbsp;&nbsp;Autonomic computing</OPTION> <OPTION 
+              value=gridZ>&nbsp;&nbsp;Grid computing</OPTION> <OPTION 
+              value=javaZ>&nbsp;&nbsp;Java technology</OPTION> <OPTION 
+              value=linuxZ>&nbsp;&nbsp;Linux</OPTION> <OPTION 
+              value=opensrcZ>&nbsp;&nbsp;Open source</OPTION> <OPTION 
+              value=webarchZ>&nbsp;&nbsp;Web arch.</OPTION> <OPTION 
+              value=webservZ>&nbsp;&nbsp;Web services</OPTION> <OPTION 
+              value=wirelessZ>&nbsp;&nbsp;Wireless</OPTION> <OPTION 
+              value=xmlZ>&nbsp;&nbsp;XML</OPTION> <OPTION 
+              value=dW>-----------------</OPTION> <OPTION 
+              value=forums>&nbsp;&nbsp;dW forums</OPTION> <OPTION 
+              value=dW>-----------------</OPTION> <OPTION 
+              value=toolbox>&nbsp;&nbsp;dW Subscription</OPTION> <OPTION 
+              value=dW>-----------------</OPTION> <OPTION 
+              value=aW>alphaWorks</OPTION> <OPTION 
+              value=dW>-----------------</OPTION> <OPTION value=all>All of 
+              IBM</OPTION></SELECT></TD>
+          <TD><IMG height=1 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=5 
+border=0></TD>
+          <TD><INPUT type=image height=23 alt="Search button" width=64 
+            src="Using SDL, Part 4 lex and yacc_files/search.gif" value=Search 
+            border=0 name=Search></TD>
+          <TD vAlign=top><IMG height=1 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=10 
+          border=0></TD></TR>
+        <TR vAlign=top>
+          <TD>&nbsp;</TD>
+          <TD class=dwsmallwh>&nbsp;</TD>
+          <TD>&nbsp;</TD>
+          <TD class=dwsmall><A style="COLOR: #ffffff" 
+            href="http://www-106.ibm.com/developerworks/search/help-dw.html" 
+            target=_blank>Search help</A><IMG height=1 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=1 
+border=0></TD>
+          <TD colSpan=4>&nbsp;</TD></TR>
+        <TR>
+          <TD colSpan=8><IMG height=4 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=390 
+          border=0></TD></TR></TBODY></TABLE></TD></TR></FORM>
+  <TR>
+    <TD class=hbg width=160 height=21>&nbsp;</TD>
+    <TD class=bbg vAlign=top colSpan=2 height=21>&nbsp;&nbsp;&nbsp;<A 
+      class=mainlink 
+      href="http://www-106.ibm.com/developerworks/cgi-bin/click.cgi?url=http://www.ibm.com/&amp;origin=dwheader">IBM 
+      home</A><SPAN class=divider>&nbsp;&nbsp;|&nbsp;&nbsp;</SPAN><A 
+      class=mainlink 
+      href="http://www-106.ibm.com/developerworks/cgi-bin/click.cgi?url=http://www.ibm.com/products/&amp;origin=dwheader">Products 
+      &amp; services</A><SPAN class=divider>&nbsp;&nbsp;|&nbsp;&nbsp;</SPAN><A 
+      class=mainlink 
+      href="http://www-106.ibm.com/developerworks/cgi-bin/click.cgi?url=http://www.ibm.com/support/">Support 
+      &amp; downloads</A> <SPAN class=divider>&nbsp;&nbsp;|&nbsp;&nbsp;</SPAN><A 
+      class=mainlink 
+      href="http://www-106.ibm.com/developerworks/cgi-bin/click.cgi?url=http://www.ibm.com/account/&amp;origin=dwheader">My 
+      account</A></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD width=5><IMG height=1 alt="" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=5 border=0></TD>
+    <TD width="100%">
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD width="100%"><IMG height=4 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=2 
+            border=0><BR><A class=dwbctl 
+            href="http://www-106.ibm.com/developerworks/">developerWorks</A> 
+            &gt; <A class=dwbctl 
+            href="http://www-106.ibm.com/developerworks/linux/">Linux</A></TD>
+          <TD align=right width=136><A 
+            href="http://www-106.ibm.com/developerworks/"><IMG height=24 
+            alt=developerWorks 
+            src="Using SDL, Part 4 lex and yacc_files/dwlogo-small.gif" 
+            width=136 border=0></A></TD>
+          <TD width=5><IMG height=1 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=5 
+        border=0></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><A name=main></A><A 
+name=top></A>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD colSpan=5><IMG height=15 alt="" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=5 border=0></TD></TR>
+  <TR vAlign=top>
+    <TD width=2><IMG height=1 alt="" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=2 border=0></TD>
+    <TD><SPAN class=atitle>Using SDL, Part 4: lex and yacc</SPAN></TD>
+    <TD width=8><IMG height=1 alt="" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=8 border=0></TD>
+    <TD align=right width=180><IMG height=1 alt="" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=180 
+      border=0><BR><NOBR><A 
+      href="ftp://www6.software.ibm.com/software/developer/library/pirates4.pdf"><IMG 
+      height=26 alt="" src="Using SDL, Part 4 lex and yacc_files/icon-pdf.gif" 
+      width=35 border=0></A><A href="javascript:void%20newWindow()"><IMG 
+      height=26 alt="e-mail it!" 
+      src="Using SDL, Part 4 lex and yacc_files/icon-email.gif" width=46 
+      border=0></A></NOBR></TD>
+    <TD width=6><IMG height=1 alt="" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=6 border=0></TD></TR>
+  <TR vAlign=top>
+    <TD bgColor=#000000 colSpan=5><IMG height=1 alt="" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=100 border=0></TD></TR>
+  <TR vAlign=top>
+    <TD bgColor=#ffffff colSpan=5><IMG height=8 alt="" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=100 
+  border=0></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD width=5><IMG height=1 alt="" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=5 border=0></TD>
+    <TD width="100%">
+      <TABLE cellSpacing=0 cellPadding=0 width=168 align=right border=0>
+        <TBODY>
+        <TR>
+          <TD width=8><IMG height=21 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=5></TD>
+          <TD width=160>
+            <TABLE cellSpacing=0 cellPadding=0 width=160 border=0>
+              <TBODY>
+              <TR>
+                <TD width=160 bgColor=#000000 height=1><IMG height=1 alt="" 
+                  src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+              width=160></TD></TR>
+              <TR>
+                <TD align=middle 
+                background="Using SDL, Part 4 lex and yacc_files/bg-gold.gif" 
+                height=5><B>Contents:</B></TD></TR>
+              <TR>
+                <TD width=160 bgColor=#666666 height=1><IMG height=1 alt="" 
+                  src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+              width=160></TD></TR>
+              <TR>
+                <TD>
+                  <TABLE cellSpacing=0 cellPadding=0 width=160 border=0>
+                    <TBODY>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#h0">Who 
+                        wants another slice of bison?</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#h1">Starting 
+                        with the basics</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#h2">How 
+                        do we feed the beast?</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#h3">Using 
+                        lex and yacc with C++</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#h4">Parsing 
+                        from strings</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#h5">Using 
+                        multiple parsers</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#h6">Our 
+                        scripting language</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#h7">Building 
+                        a GUI with yacc</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#h8">An 
+                        example GUI</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#h9">Conclusion</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR><!--Standard links for every dw-article-->
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#resources">Resources</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#author1">About 
+                        the authors</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/library/l-pirates4/#rating">Rate 
+                        this article</A></TD></TR>
+                    <TR>
+                      <TD><IMG height=10 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width=160 border=0>
+              <TBODY>
+              <TR>
+                <TD width=160 bgColor=#000000 height=1><IMG height=1 alt="" 
+                  src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+              width=160></TD></TR>
+              <TR>
+                <TD align=middle 
+                background="Using SDL, Part 4 lex and yacc_files/bg-gold.gif" 
+                height=5><B>Subscriptions:</B></TD></TR>
+              <TR>
+                <TD width=160 bgColor=#666666 height=1><IMG height=1 alt="" 
+                  src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+              width=160></TD></TR>
+              <TR>
+                <TD>
+                  <TABLE cellSpacing=0 cellPadding=1 width=160 border=0>
+                    <TBODY>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/cgi-bin/click.cgi?url=www-106.ibm.com/developerworks/newsletter/&amp;origin=dw-article">dW 
+                        newsletters</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR>
+                    <TR>
+                      <TD><A 
+                        href="http://www-106.ibm.com/developerworks/toolbox/">dW 
+                        Subscription<BR>(CDs and downloads)</A></TD></TR>
+                    <TR>
+                      <TD height=1><IMG height=5 alt="" 
+                        src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                        width=160></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=0 width=160 border=0>
+              <TBODY>
+              <TR>
+                <TD width=150 bgColor=#000000 colSpan=2 height=2><IMG height=2 
+                  alt="" src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                  width=160></TD></TR>
+              <TR>
+                <TD width=150 bgColor=#ffffff colSpan=2 height=2><IMG height=2 
+                  alt="" src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+                  width=160></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><SPAN 
+      class=atitle2>Building parsers for scripts and GUI design</SPAN><BR>
+      <P><A 
+      href="http://www-106.ibm.com/developerworks/library/l-pirates4/#author1"><NAME>Sam 
+      Lantinga</NAME></A>, lead programmer, Loki Entertainment Software<BR><A 
+      href="http://www-106.ibm.com/developerworks/library/l-pirates4/#author2"><NAME>Lauren 
+      MacDonell</NAME></A>, technical writer, SkilledNursing.com<BR><BR>1 May 
+      2000</P>
+      <BLOCKQUOTE>In this installment we look at two useful tools in the 
+        arsenal of any Linux programmer: lex and yacc. These tools have enabled 
+        us to easily build the scripting language and GUI framework that we used 
+        in Pirates Ho!, our SDL-based Linux game.</BLOCKQUOTE>
+      <P>In designing Pirates Ho!, we needed an easy way to describe the 
+      interface and dialog options to the player. For the description we needed 
+      a simple, consistent, and flexible language, so we looked for tools that 
+      would help us build our scripting language.</P>
+      <P><A name=h0><SPAN class=atitle2>Who wants another slice of 
+      bison?</SPAN></A><BR>The word "yacc" struck fear into my heart in school. 
+      It evoked images of disheveled and pale students muttering about compilers 
+      and symbol tables. So I carefully managed to avoid taking a compiler 
+      class. But while playing around with our game, I plucked up my courage and 
+      tackled yacc in the hope that it would make the scripting a little easier. 
+      In the end, yacc not only made scripting easier, it made it fun as 
+      well.</P>
+      <P><A name=h1><SPAN class=atitle2>Starting with the 
+      basics</SPAN></A><BR>Yacc is actually fairly straightforward to use. You 
+      give it a list of rules describing your grammar, and it parses tokens and 
+      takes actions based on what it sees. For our scripting language we wanted 
+      to start out simple, and initially just specified numbers and their 
+      logical operations:</P><A name=N10052><B>eval.y</B></A><BR>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+        border=1><TBODY>
+        <TR>
+          <TD><PRE><CODE>
+
+%{
+/* This first section contains C code which will be included in the output
+   file.
+*/
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+/* Since we are using C++, we need to specify the prototypes for some 
+   internal yacc functions so that they can be found at link time.
+*/
+extern int yylex(void);
+extern void yyerror(char *msg);
+%}
+
+/* This is a union of the different types of values that a token can
+   take on.  In our case we'll just handle "numbers", which are of
+   C int type.
+*/
+%union {
+  int number;
+}
+
+/* These are untyped tokens which are recognized as part of the grammar */
+%token AND OR EQUALS
+
+/* Here we are, any NUMBER token is stored in the number member of the
+   union above.
+*/
+%token  NUMBER
+
+/* These rules all return a numeric value */
+%type 
+ expression
+%type 
+ logical_expression and or equals
+%%
+
+/* Our language consists either of a single statement or of a list of statements.
+   Notice the recursivity of the rule, this allows us to have any
+   number of statements in a statement list.
+*/
+statement_list: statement | statement_list statement
+  ;
+  
+/* A statement is simply an expression.  When the parser sees an expression
+   we print out its value for debugging purposes.  Later on we'll
+   have more than just expressions in our statements.
+*/
+statement: expression
+  { printf("Expression = %d\n", $1); }
+  ;
+  
+/* An expression can be a number or a logical expression. */
+expression: NUMBER
+  |   logical_expression
+  ;
+  
+/* We have a few different types of logical expressions */
+logical_expression: and
+  |           or
+  |           equals
+  ;
+  
+/* When the parser sees two expressions surrounded by parenthesis and
+   connected by the AND token, it will actually perform a C logical
+   expression and store the result into $$, which is the "value" of
+   this statement.
+*/
+and: '(' expression AND expression ')'
+  { if ( $2 &amp;&amp; $4 ) { $$ = 1; } else { $$ = 0; } }
+  ;
+  
+or: '(' expression OR expression ')'
+  { if ( $2 || $4 ) { $$ = 1; } else { $$ = 0; } }
+  ;
+  
+equals: '(' expression EQUALS expression ')'
+  { if ( $2 == $4 ) { $$ = 1; } else { $$ = 0; } }
+  ;
+  
+%%
+
+/* This is a sample main() function that just parses standard input
+   using our yacc grammar.  It allows us to feed sample scripts in
+   and see if they are parsed correctly.
+*/
+int main(int argc, char *argv[])
+{
+  yyparse();
+  
+}
+/* This is an error function used by yacc, and must be defined */-
+void yyerror(char *message)
+{
+  fprintf(stderr, "%s\n", message);
+}
+</CODE></PRE></TD></TR></TBODY></TABLE>
+      <P><A name=h2><SPAN class=atitle2>How do we feed the 
+      beast?</SPAN></A><BR>Now that we had a simple grammar that recognizes 
+      sequences of tokens, we needed to find a way to feed tokens to the parser. 
+      Lex is a tool that takes input, turns it into tokens, and passes them to 
+      yacc. Here we describe the expressions that lex turns into tokens:</P><A 
+      name=N10062><B>eval.l</B></A><BR>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+        border=1><TBODY>
+        <TR>
+          <TD><PRE><CODE>
+
+%{
+/* Again, this is C code that is inserted into the beginning of the output */
+#include 
+
+#include "y.tab.h"  /* Include the token definitions generated by yacc */
+%}
+
+/* Prevent the need for linking with -lfl */
+%option noyywrap
+
+/* This next section is a set of regular expressions that describe input
+   tokens that are passed back to yacc.  The tokens are defined in y.tab.h,
+   which is generated by yacc.
+ */
+%%
+\/\/.*    /* ignore comments */
+-[0-9]+|[0-9]+  { yylval.number=atoi(yytext); return NUMBER; }
+[ \t\n]   /* ignore whitespace */
+&amp;&amp;    { return AND; }
+\|\|    { return OR; }
+==    { return EQUALS; }
+.   return yytext[0];
+%%
+</CODE></PRE></TD></TR></TBODY></TABLE>
+      <P>Now that we had our parsing source in the current directory, we needed 
+      a Makefile to build them:</P><A name=N1006D><B>Makefile</B></A><BR>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+        border=1><TBODY>
+        <TR>
+          <TD><PRE><CODE>
+
+all: eval 
+
+y.tab.c: eval.y
+  yacc -d $&lt;
+  
+lex.yy.c: eval.l
+  lex $&lt;
+  
+eval: y.tab.o lex.yy.o
+  $(CC) -o $@ $^
+</CODE></PRE></TD></TR></TBODY></TABLE>
+      <P>By default, yacc outputs to y.tab.c and lex outputs to lex.yy.c, which 
+      is why we used those names as our source files. The Makefile contains 
+      rules to build source from the parser description files. When we were 
+      done, we could type "make" to build a parser that we could run and type 
+      scripts into to check our logic. </P>
+      <TABLE cellSpacing=0 cellPadding=3 width="100%" border=1>
+        <TBODY>
+        <TR>
+          <TD><B>shift/reduce conflicts</B><BR>shift/reduce conflicts occur 
+            when yacc must choose between either continuing to parse a set of 
+            tokens, or resolving it into a rule. For example, if you create a 
+            grammar that consists of: 
+            <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+            border=1>
+              <TBODY>
+              <TR>
+                <TD><PRE><CODE>expression: NUMBER | plus
+  ;
+plus: expression '+' expression
+  ;
+</CODE></PRE></TD></TR></TBODY></TABLE>
+            <P>when the yacc parser sees a number, it doesn't know whether to 
+            resolve it into an expression immediately, or to wait for "X + Y". 
+            In this case, yacc warns of a shift/reduce conflict, and by default 
+            waits for the full "X + Y" expression. You can see exactly what is 
+            going on when using GNU bison by giving it the '-v' command line 
+            option, which creates a *.output file containing the rules and 
+            conflicts that have arisen. </P>
+            <P>We can easily resolve the ambiguity by requiring parentheses 
+            around the plus expression: </P>
+            <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+            border=1>
+              <TBODY>
+              <TR>
+                <TD><PRE><CODE>expression: NUMBER | plus
+  ;
+plus: '(' expression '+' expression ')'
+  ;
+</CODE></PRE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+      <P><A name=h3><SPAN class=atitle2>Using lex and yacc with 
+      C++</SPAN></A><BR>There are a few caveats when using lex and yacc with 
+      C++. Lex and yacc output to C files, so for C++ we used the GNU 
+      equivalents, flex and bison. These tools allow you to specify the names of 
+      the output files. We also added general rules to the Makefile so GNU Make 
+      automatically built our C++ source files from the lex and yacc sources. 
+      This required us to rename the lex and yacc sources to "lex_eval.l" and 
+      "yacc_eval.y" respectively, so that Make generated different C++ source 
+      files for each of them. We also needed to change the file lex source 
+      includes for the yacc token definitions. The header file that bison 
+      outputs is the name of the output file with an .h suffix, or in our case 
+      "yacc_eval.cpp.h". Here is our new Makefile:</P><A 
+      name=N1009D><B>Makefile</B></A><BR>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+        border=1><TBODY>
+        <TR>
+          <TD><PRE><CODE>
+
+all: eval 
+
+%.cpp: %.y
+  bison -d -o $@ $&lt;
+  
+%.cpp: %.l
+  flex -o$@ $&lt;
+  
+yacc_eval.o: yacc_eval.cpp
+lex_eval.o: lex_eval.cpp
+
+eval: yacc_eval.o lex_eval.o
+  $(CXX) -o $@ $^
+</CODE></PRE></TD></TR></TBODY></TABLE>
+      <P><A name=h4><SPAN class=atitle2>Parsing from strings</SPAN></A><BR>The 
+      default lex code reads its input from standard input, but for our game we 
+      wanted to be able to parse strings in memory. This is easily done with 
+      flex by redefining the macro YY_INPUT at the top of the lex source 
+      file:</P>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+        border=1><TBODY>
+        <TR>
+          <TD><PRE><CODE>
+extern int eval_getinput(char *buf, int maxlen);
+#undef YY_INPUT
+#define YY_INPUT(buf, retval, maxlen) (retval = eval_getinput(buf, maxlen))
+</CODE></PRE></TD></TR></TBODY></TABLE>
+      <P>We wrote the actual code for eval_getinput() in a separate file and 
+      made it very flexible, so it could take input from a file pointer or a 
+      string in memory. To use the actual code, we first set up the global data 
+      source variable and then called the yacc function yyparse(), which calls 
+      our input function and parses it. </P>
+      <P><A name=h5><SPAN class=atitle2>Using multiple parsers</SPAN></A><BR>In 
+      our game we wanted to have separate parsers for the scripting language and 
+      the GUI descriptions, since they used different grammar rules. It is 
+      possible to do this, but we had to play a couple of tricks with flex and 
+      bison. First, we needed to change the prefix for the parser from "yy" to 
+      something unique in order to avoid name clashes. We did this by using 
+      command line options to flex and bison, <CODE>-P</CODE> for flex, and 
+      <CODE>-p</CODE> for bison. Next, we had to change the place in our code 
+      where we used the "yy" prefix to use our chosen prefix. This included the 
+      references to <CODE>yylval</CODE> in our lex source, and the definition of 
+      <CODE>yyerror()</CODE> since we placed it in a separate file for the final 
+      game. The final Makefile looks like this:</P><A 
+      name=N100CA><B>Makefile</B></A><BR>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+        border=1><TBODY>
+        <TR>
+          <TD><PRE><CODE>
+
+all: eval 
+
+YY_PREFIX = eval_
+
+%.cpp: %.y
+  bison -p$(YY_PREFIX) -d -o $@ $&lt;
+  
+%.cpp: %.l
+  flex -P$(YY_PREFIX) -o$@ $&lt;
+  
+yacc_eval.o: yacc_eval.cpp
+lex_eval.o: lex_eval.cpp
+
+eval: yacc_eval.o lex_eval.o
+  $(CXX) -o $@ $^
+</CODE></PRE></TD></TR></TBODY></TABLE>
+      <P><A name=h6><SPAN class=atitle2>Our scripting language</SPAN></A><BR>We 
+      started with the code shown above (available for download in the <A 
+      href="http://www-106.ibm.com/developerworks/library/l-pirates4/#resources">Resources</A>) 
+      and went on to add support for functions, variables, and simple flow 
+      control, until we ended up with a fairly complete interpreted language for 
+      our game. Here is a sample of one possible script:</P><A 
+      name=N100DE><B>example.txt</B></A><BR>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+        border=1><TBODY>
+        <TR>
+          <TD><PRE><CODE>
+
+function whitewash
+{
+        if ( $1 == "Blackbeard" ) {
+                print("Pouring whitewash on Blackbeard!")
+                if ( $rum &gt;= 3 ) {
+                        print("Blackbeard doesn't care anymore...")
+                        mood = "happy"
+                } else {
+                        print($1, "says Grr....")
+                        mood = "angry"
+                        print("Have some more rum?")
+                        ++rum
+                }
+        }
+}
+
+pirate = "Blackbeard"
+rum = 0
+mood = "angry"
+print($pirate, "is walking by...")
+while ( $mood == "angry" ) {
+        whitewash($pirate)
+}
+return "there was much rejoicing"
+</CODE></PRE></TD></TR></TBODY></TABLE>
+      <P><A name=h7><SPAN class=atitle2>Building a GUI with 
+      yacc</SPAN></A><BR>We built our GUI as a set of widgets that inherit their 
+      attributes from base classes. This maps very nicely to the way yacc parses 
+      its input. We defined a set of rules that correspond to the attributes of 
+      the base classes, and then defined the rules for the widgets as specific 
+      to each one, which we also did for the base classes' rules. When the 
+      parser matches a rule for a widget attribute, we can safely cast the 
+      widget pointer to the appropriate class and set the desired attribute. 
+      Here is a simple example for the button widget:</P><A 
+      name=N100EE><B>yacc_gui.y</B></A><BR>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+        border=1><TBODY>
+        <TR>
+          <TD><PRE><CODE>
+
+%{
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+#include "widget.h"
+#include "widget_button.h"
+
+#define PARSE_DEBUG(X)  (printf X)
+
+#define MAX_WIDGET_DEPTH 32
+
+static int widget_depth = -1;
+static Widget *widget_stack[MAX_WIDGET_DEPTH];
+static Widget *widget;
+
+static void StartWidget(Widget *the_widget)
+{
+  widget_stack[widget_depth++] = widget = the_widget;
+}
+static void FinishWidget(void)
+{
+  Widget *child;
+  
+  --widget_depth;
+  if ( widget_depth &gt;= 0 ) {
+    child = widget;
+    widget = widget_stack[widget_depth];
+    widget-&gt;AddChild(child);
+  }
+}
+
+%}
+
+[tokens and types skipped for brevity]
+
+%%
+
+widget: button
+  { FinishWidget();
+    PARSE_DEBUG(("Completed widget\n")); }
+  ;
+  
+widget_attribute:
+  widget_area
+  ;
+  
+/* Widget area: x, y, width, height */
+widget_area:
+  AREA '{' number ',' number ',' number ',' number '}'
+  { widget-&gt;SetArea($3, $5, $7, $9);
+    PARSE_DEBUG(("Area: %dx%d at (%d,%d)\n", $7, $9, $3, $5)); }
+  ;
+  
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/* The button widget */
+
+button:
+  button_tag '{' button_attributes '}'
+  { PARSE_DEBUG(("Completed button\n")); }
+  ;
+  
+button_tag:
+  BUTTON name
+  { StartWidget(new WidgetButton($2));
+    PARSE_DEBUG(("Starting a button: %s\n", $2));
+    free($2); }
+  ;
+  
+/* The button widget attributes */
+button_attributes:
+  button_attribute
+| button_attributes button_attribute
+  ;
+  
+button_attribute:
+  widget
+| widget_attribute
+| button_normal_image
+| button_hover_image
+  ;
+  
+button_normal_image:
+  IMAGE file
+  { ((WidgetButton *)widget)-&gt;LoadNormalImage($2);
+    PARSE_DEBUG(("Button normal image: %s\n", $2));
+    free($2); }
+  ;
+  
+button_hover_image:
+  HOVERIMAGE file
+  { ((WidgetButton *)widget)-&gt;LoadHoverImage($2);
+    PARSE_DEBUG(("Button hover image: %s\n", $2));
+    free($2); }
+  ;
+</CODE></PRE></TD></TR></TBODY></TABLE>
+      <P><A name=h8><SPAN class=atitle2>An example GUI</SPAN></A><BR>Here is our 
+      main menu to serve as an example of the kind of GUI you can build with 
+      this technique:</P><A name=N100FE><B>main_menu.gui</B></A><BR>
+      <TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#cccccc 
+        border=1><TBODY>
+        <TR>
+          <TD><PRE><CODE>
+
+background "main_menu" {
+  image "main_menu"
+  button "new_game" {
+    area { 32, 80, 370, 64 }
+    image "main_menu-new"
+    hover_image "main_menu-new_hi"
+    #onclick [ new_gui("new_game") ]
+    onclick [ new_gui("character_screen") ]
+  }
+  button "load_game" {
+    area { 32, 152, 370, 64 }
+    image "main_menu-load"
+    hover_image "main_menu-load_hi"
+    onclick [ new_gui("load_game") ]
+  }
+  button "save_game" {
+    area { 32, 224, 370, 64 }
+    image "main_menu-save"
+    hover_image "main_menu-save_hi"
+    onclick [ new_gui("save_game") ]
+  }
+  button "preferences" {
+    area { 32, 296, 370, 64 }
+    image "main_menu-prefs"
+    hover_image "main_menu-prefs_hi"
+    onclick [ new_gui("preferences") ]
+  }
+  button "quit_game" {
+    area { 32, 472, 370, 64 }
+    image "main_menu-quit"
+    hover_image "main_menu-quit_hi"
+    onclick [ quit_game() ]
+  }
+}
+</CODE></PRE></TD></TR></TBODY></TABLE>
+      <P>In this screen description, the widgets and attributes are parsed by 
+      the GUI parser, and the button callbacks are interpreted by the script 
+      parser. new_gui() and quit_game() are internal functions exported to the 
+      script mechanism.</P>
+      <P><A name=N10107><B>Main menu</B></A><BR><IMG height=450 
+      alt="main menu screenshot" 
+      src="Using SDL, Part 4 lex and yacc_files/main-menu.jpg" width=600 
+      border=0 valign="top"></P>
+      <P><A name=h9><SPAN class=atitle2>Conclusion</SPAN></A><BR>Lex and yacc 
+      were invaluable tools in the design of our scripting and GUI design 
+      languages. They seemed daunting at first, but after playing with them a 
+      little, they became comfortable and easy to use. Join us next month when 
+      we start to put it all together and give you a glimpse into the world of 
+      <I>Pirates Ho!</I> </P>
+      <P><A name=resources><SPAN class=atitle2>Resources</SPAN></A>
+      <UL>
+        <LI>Visit the <A href="http://pirates.devolution.com/"><I>Pirates 
+        Ho!</I> </A>Web site<BR><BR>
+        <LI>You can download the source for this sample: 
+        <UL>
+          <LI><A 
+          href="http://pirates.devolution.com/samples/eval.tar.gz">eval.tar.gz 
+          (script example source)</A> 
+          <LI><A 
+          href="http://pirates.devolution.com/samples/snapshot-043000.tar.gz">snapshot-043000.tar.gz 
+          (game source snapshot)</A> </LI></UL><BR>
+        <LI>Libraries used by "Pirates Ho!" 
+        <UL>
+          <LI><I><A 
+          href="http://www.devolution.com/~slouken/SDL/projects/SDL_image/">SDL_image</A> 
+          </I>
+          <LI><I><A 
+          href="http://www.devolution.com/~slouken/SDL/projects/SDL_mixer/">SDL_mixer</A> 
+          </I>
+          <LI><I><A 
+          href="http://www.devolution.com/~slouken/SDL/projects/SDL_ttf/">SDL_ttf</A> 
+          </I></LI></UL><BR>
+        <LI><A href="http://www.oreilly.com/catalog/lex/">lex &amp; yacc, 2nd 
+        Edition</A>, O'Reilly, 1992 <BR><BR>
+        <LI>The Pirates Ho! series on <I>developerWorks</I>: 
+        <UL>
+          <LI><A 
+          href="http://www-106.ibm.com/developerworks/library/making-linux-fun/index.html">"SDL: 
+          Making Linux fun"</A> 
+          <LI><A 
+          href="http://www-106.ibm.com/developerworks/library/pirates/index.html">"Using 
+          SDL: The birth of "Pirates Ho!"</A> 
+          <LI><A 
+          href="http://www-106.ibm.com/developerworks/library/pirates2/index.html">"Using 
+          SDL, Part 2: Coding "Pirates Ho!"</A> 
+          <LI><A 
+          href="http://www-106.ibm.com/developerworks/library/pirates3/index.html">"Using 
+          SDL, Part 3: Graphic design"</A> </LI></UL><BR>
+        <LI><A href="http://www.devolution.com/~slouken/SDL/intro/toc.html">An 
+        introduction to the SDL API</A> Using SDL, Part 2: Coding "Pirates Ho!" 
+        <BR><BR></LI></UL>
+      <P></P>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD><A name=author1></A><SPAN class=atitle2>About the 
+            authors</SPAN><BR>Sam Lantinga is the author of the Simple 
+            DirectMedia Layer library, and is currently employed as lead 
+            programmer at <A href="http://www.lokigames.com/">Loki Entertainment 
+            Software</A>, a company dedicated to bringing best-selling games to 
+            Linux. His involvement with Linux and games began in 1995 with 
+            various DOOM! tool ports and the port of the Macintosh game 
+            <I>Maelstrom</I> to Linux.</TD></TR>
+        <TR>
+          <TD>
+            <P><A name=author2><BR></A>Lauren MacDonell is a technical writer 
+            with SkilledNursing.com and co-developer of "Pirates Ho!". When she 
+            isn't working, writing, or belly dancing, she takes care of her 
+            tropical fish.</P></TD></TR></TBODY></TABLE><BR clear=all><IMG height=10 
+      alt="" src="Using SDL, Part 4 lex and yacc_files/c.gif" width=100 
+      border=0><BR>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD align=right width="100%"><A 
+            href="ftp://www6.software.ibm.com/software/developer/library/pirates4.pdf"><IMG 
+            height=26 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/icon-pdf.gif" width=35 
+            border=0></A><A href="javascript:void%20newWindow()"><IMG height=26 
+            alt="e-mail it!" 
+            src="Using SDL, Part 4 lex and yacc_files/icon-email.gif" width=46 
+            border=0></A></TD>
+          <TD width=5><IMG height=1 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=5 
+        border=0></TD></TR>
+        <TR vAlign=top>
+          <TD bgColor=#000000 colSpan=2><IMG height=1 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=100 
+          border=0></TD></TR>
+        <TR vAlign=top>
+          <TD bgColor=#ffffff colSpan=2><IMG height=8 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=100 
+          border=0></TD></TR></TBODY></TABLE><BR>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD>
+            <FORM 
+            action=http://www.alphaworks.ibm.com/developerworks/ratings.nsf/RateArticle?CreateDocument 
+            method=post><INPUT type=hidden 
+            value="Using SDL, Part 4: lex and yacc" name=ArticleTitle><INPUT 
+            type=hidden value=Linux name=Zone><INPUT type=hidden 
+            value=http://www-106.ibm.com/developerworks/thankyou/feedback-thankyou.html 
+            name=RedirectURL><A name=rating><B>What do you think of this 
+            document?</B></A>
+            <TABLE cellSpacing=0 cellPadding=0 width=600 border=0>
+              <TBODY>
+              <TR>
+                <TD colSpan=5><IMG height=8 alt="" 
+                  src="Using SDL, Part 4 lex and yacc_files/c.gif" width=100 
+                  border=0></TD></TR>
+              <TR vAlign=top>
+                <TD width="16%"><INPUT type=radio value=5 name=Rating>Killer! 
+                  (5)</TD>
+                <TD width="20%"><INPUT type=radio value=4 name=Rating>Good 
+                  stuff (4)</TD>
+                <TD width="24%"><INPUT type=radio value=3 name=Rating>So-so; 
+                  not bad (3)</TD>
+                <TD width="22%"><INPUT type=radio value=2 name=Rating>Needs 
+                  work (2)</TD>
+                <TD width="18%"><INPUT type=radio value=1 name=Rating>Lame! 
+                (1)</TD></TR></TBODY></TABLE><BR><B>Comments?</B><BR><TEXTAREA name=Comments rows=5 wrap=virtual cols=60></TEXTAREA><BR><BR><INPUT type=submit value="Submit feedback"></FORM></TD></TR>
+        <TR vAlign=top>
+          <TD bgColor=#ffffff><IMG height=8 alt="" 
+            src="Using SDL, Part 4 lex and yacc_files/c.gif" width=100 
+          border=0></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR vAlign=top>
+          <TD width="100%">
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR vAlign=top>
+                <TD width="100%"><IMG height=4 alt="" 
+                  src="Using SDL, Part 4 lex and yacc_files/c.gif" width=2 
+                  border=0><BR><A class=dwbctl 
+                  href="http://www-106.ibm.com/developerworks/">developerWorks</A> 
+                  &gt; <A class=dwbctl 
+                  href="http://www-106.ibm.com/developerworks/linux/">Linux</A></TD>
+                <TD align=right width=136><A 
+                  href="http://www-106.ibm.com/developerworks/"><IMG height=24 
+                  alt=developerWorks 
+                  src="Using SDL, Part 4 lex and yacc_files/dwlogo-small.gif" 
+                  width=136 border=0></A></TD>
+                <TD width=5><IMG height=1 alt="" 
+                  src="Using SDL, Part 4 lex and yacc_files/c.gif" width=5 
+                  border=0></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD>
+    <TD width=1><IMG height=1 alt="" 
+      src="Using SDL, Part 4 lex and yacc_files/c.gif" width=1 
+  border=0></TD></TR></TBODY></TABLE><!-- IBM FOOTER -->
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=1 alt="" src="Using SDL, Part 4 lex and yacc_files/c.gif" 
+      width=1></TD></TR>
+  <TR vAlign=top>
+    <TD class=bbg height=21>&nbsp;&nbsp;<A class=mainlink 
+      href="http://www-106.ibm.com/developerworks/cgi-bin/click.cgi?url=http://www.ibm.com/ibm/?origin=dwheader">About 
+      IBM</A><SPAN class=divider>&nbsp;&nbsp;|&nbsp;&nbsp;</SPAN><A 
+      class=mainlink 
+      href="http://www-106.ibm.com/developerworks/cgi-bin/click.cgi?url=http://www.ibm.com/privacy/?origin=dwheader">Privacy</A><SPAN 
+      class=divider>&nbsp;&nbsp;|&nbsp;&nbsp;</SPAN><A class=mainlink 
+      href="http://www-106.ibm.com/developerworks/cgi-bin/click.cgi?url=http://www.ibm.com/legal/?origin=dwheader">Terms 
+      of use</A><SPAN class=divider>&nbsp;&nbsp;|&nbsp;&nbsp;</SPAN><A 
+      class=mainlink 
+      href="http://www-106.ibm.com/developerworks/cgi-bin/click.cgi?url=http://www.ibm.com/contact/?origin=dwheader">Contact</A></TD></TR></TBODY></TABLE><!-- END IBM FOOTER --><!-- SURFAID METRICS ** 05/01/03 DO NOT ALTER ** -------------->
+<SCRIPT language=JavaScript1.2 
+src="Using SDL, Part 4 lex and yacc_files/stats.js" 
+type=text/javascript></SCRIPT>
+<NOSCRIPT><IMG height=1 alt="" 
+src="C:\Documents and Settings\pc\Desktop\prog\Using SDL, Part 4 lex and yacc_files\c(1).gif" 
+width=1 border=0></NOSCRIPT> </BODY></HTML>

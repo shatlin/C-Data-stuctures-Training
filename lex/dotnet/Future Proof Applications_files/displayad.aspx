@@ -1,0 +1,1 @@
+document.write('<a target="_blank" href="http://ads.aspalliance.com/adredir.asp?id=500&m=43&amp;s=&amp;">PowerPack from IBM</a><br />Get the latest evaluation software and resources to evaluate IBM software development products and middleware.  Sign up for the .NET Developer PowerPack from IBM today.');

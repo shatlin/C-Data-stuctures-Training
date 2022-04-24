@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0044)http://epaperpress.com/lexandyacc/calc2.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="calc2_files/format.css" type=text/css rel=stylesheet><LINK 
+href="calc2_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="calc2_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Compiler</H1><PRE class=code>#include &lt;stdio.h&gt;
+#include "calc3.h"
+#include "y.tab.h"
+
+static int lbl;
+
+int ex(nodeType *p) {
+    int lbl1, lbl2;
+
+    if (!p) return 0;
+    switch(p-&gt;type) {
+    case typeCon:       
+        printf("\tpush\t%d\n", p-&gt;con.value); 
+        break;
+    case typeId:        
+        printf("\tpush\t%c\n", p-&gt;id.i + 'a'); 
+        break;
+    case typeOpr:
+        switch(p-&gt;opr.oper) {
+        case WHILE:
+            printf("L%03d:\n", lbl1 = lbl++);
+            ex(p-&gt;opr.op[0]);
+            printf("\tjz\tL%03d\n", lbl2 = lbl++);
+            ex(p-&gt;opr.op[1]);
+            printf("\tjmp\tL%03d\n", lbl1);
+            printf("L%03d:\n", lbl2);
+            break;
+        case IF:
+            ex(p-&gt;opr.op[0]);
+            if (p-&gt;opr.nops &gt; 2) {
+                /* if else */
+                printf("\tjz\tL%03d\n", lbl1 = lbl++);
+                ex(p-&gt;opr.op[1]);
+                printf("\tjmp\tL%03d\n", lbl2 = lbl++);
+                printf("L%03d:\n", lbl1);
+                ex(p-&gt;opr.op[2]);
+                printf("L%03d:\n", lbl2);
+            } else {
+                /* if */
+                printf("\tjz\tL%03d\n", lbl1 = lbl++);
+                ex(p-&gt;opr.op[1]);
+                printf("L%03d:\n", lbl1);
+            }
+            break;
+        case PRINT:     
+            ex(p-&gt;opr.op[0]);
+            printf("\tprint\n");
+            break;
+        case '=':       
+            ex(p-&gt;opr.op[1]);
+            printf("\tpop\t%c\n", p-&gt;opr.op[0]-&gt;id.i + 'a');
+            break;
+        case UMINUS:    
+            ex(p-&gt;opr.op[0]);
+            printf("\tneg\n");
+            break;
+        default:
+            ex(p-&gt;opr.op[0]);
+            ex(p-&gt;opr.op[1]);
+            switch(p-&gt;opr.oper) {
+            case '+':   printf("\tadd\n"); break;
+            case '-':   printf("\tsub\n"); break; 
+            case '*':   printf("\tmul\n"); break;
+            case '/':   printf("\tdiv\n"); break;
+            case '&lt;':   printf("\tcompLT\n"); break;
+            case '&gt;':   printf("\tcompGT\n"); break;
+            case GE:    printf("\tcompGE\n"); break;
+            case LE:    printf("\tcompLE\n"); break;
+            case NE:    printf("\tcompNE\n"); break;
+            case EQ:    printf("\tcompEQ\n"); break;
+            }
+        }
+    }
+    return 0;
+}
+</PRE></BODY></HTML>

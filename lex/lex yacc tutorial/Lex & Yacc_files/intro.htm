@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0044)http://epaperpress.com/lexandyacc/intro.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="intro_files/format.css" type=text/css rel=stylesheet><LINK 
+href="intro_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="intro_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Overview</H1>
+<P>Until 1975, writing a compiler was a very time-consuming process. Then <A 
+href="http://epaperpress.com/lexandyacc/download/lex.pdf" target=_blank>Lesk 
+[1975]</A> and <A href="http://epaperpress.com/lexandyacc/download/yacc.pdf" 
+target=_blank>Johnson [1975]</A> published papers on lex and yacc. These 
+utilities greatly simplify compiler writing. Implementation details for lex and 
+yacc may be found in <A 
+href="http://www.amazon.com/exec/obidos/ASIN/0201100886/none01" 
+target=_blank>Aho [1986]</A>. Lex and yacc are available from </P>
+<UL>
+  <LI><A href="http://www.mks.com/" target=_blank>Mortice Kern Systems (MKS)</A> 
+
+  <LI><A href="http://www.gnu.org/" target=_blank>GNU Flex and Bison</A> 
+  <LI><A href="http://www.mingw.org/" target=_blank>Ming</A> 
+  <LI><A href="http://www.cygwin.com/" target=_blank>CygWin</A>, or 
+  <LI><A href="http://epaperpress.com/lexandyacc/download/gnu.zip">my 
+  version</A> of Lex and Yacc </LI></UL>
+<P>The version from MKS is a high-quality commercial product that retails for 
+about $300US. GNU software is free. Output from flex may be used in a commercial 
+product, and, as of version 1.24, the same is true for bison. Ming and Cygwin 
+are 32-bit Windows ports of GNU software. In fact Cygwin is a port of the Unix 
+operating system to Windows, complete with compilers gcc and g++.</P>
+<P>My version of lex is based on Cygnus version 2.5-B19, and yacc is based on 
+GNU Bison version 1.25, and is compiled with Visual C++ and includes a minor bug 
+fix in the file handling routine. If you download my version, be sure to retain 
+directory structure when you unzip. <A 
+href="http://epaperpress.com/lexandyacc/download/gnusrc.zip">Source code</A> is 
+also available.</P>
+<P class=center><A name=Fig1-1><IMG height=406 src="intro_files/fig11.gif" 
+width=388 vspace=5></A><BR><B>Figure 1: Compilation Sequence</B></P>
+<P>Lex generates C code for a lexical analyzer, or scanner. It uses patterns 
+that match strings in the input and converts the strings to <I>tokens</I>. 
+Tokens are numerical representations of strings, and simplify processing. This 
+is illustrated in Figure 1. 
+<P>As lex finds identifiers in the input stream, it enters them in a <I>symbol 
+table</I>. The symbol table may also contain other information such as data type 
+(<I>integer</I> or <I>real</I>) and location of the variable in memory. All 
+subsequent references to identifiers refer to the appropriate symbol table 
+index. 
+<P>Yacc generates C code for a syntax analyzer, or parser. Yacc uses grammar 
+rules that allow it to analyze tokens from lex and create a syntax tree. A 
+syntax tree imposes a hierarchical structure on tokens. For example, operator 
+precedence and associativity are apparent in the syntax tree. The next step, 
+code generation, does a depth-first walk of the syntax tree to generate code. 
+Some compilers produce machine code, while others, as shown above, output 
+assembly. 
+<P class=center><A name=Fig1-2><IMG height=188 src="intro_files/fig12.gif" 
+width=481 vspace=5></A><BR><B>Figure 2: Building a Compiler with 
+Lex/Yacc</B></P>
+<P>Figure 2 illustrates the file naming conventions used by lex and yacc. We’ll 
+assume our goal is to write a BASIC compiler. First, we need to specify all 
+pattern matching rules for lex (<CODE>bas.l</CODE>) and grammar rules for yacc 
+(<CODE>bas.y</CODE>). Commands to create our compiler, <CODE>bas.exe</CODE>, are 
+listed below: </P><PRE class=icode>yacc -d bas.y                   # create y.tab.h, y.tab.c
+lex bas.l                       # create lex.yy.c
+cc lex.yy.c y.tab.c -obas.exe   # compile/link
+</PRE>
+<P>Yacc reads the grammar descriptions in <CODE>bas.y</CODE> and generates a 
+parser, function <CODE>yyparse</CODE>, in file <CODE>y.tab.c</CODE>. Included in 
+file <CODE>bas.y</CODE> are token declarations. The <CODE>-d</CODE> option 
+causes yacc to generate definitions for tokens and place them in file 
+<CODE>y.tab.h</CODE>. Lex reads the pattern descriptions in <CODE>bas.l</CODE>, 
+includes file <CODE>y.tab.h</CODE>, and generates a lexical analyzer, function 
+<CODE>yylex</CODE>, in file <CODE>lex.yy.c</CODE>. 
+<P>Finally, the lexer and parser are compiled and linked together to form the 
+executable, <CODE>bas.exe</CODE>. From <CODE>main</CODE>, we call 
+<CODE>yyparse</CODE> to run the compiler. Function <CODE>yyparse</CODE> 
+automatically calls <CODE>yylex</CODE> to obtain each token. </P></BODY></HTML>

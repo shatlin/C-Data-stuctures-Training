@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0043)http://epaperpress.com/lexandyacc/calc.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="calc_files/format.css" type=text/css rel=stylesheet><LINK 
+href="calc_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="calc_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Description</H1>
+<P>This version of the calculator is substantially more complex than previous 
+versions. Major changes include control constructs such as <I>if-else</I> and 
+<I>while</I>. In addition, a syntax tree is constructed during parsing. After 
+parsing, we walk the syntax tree to produce output. Three versions of the tree 
+walk routine are supplied:</P>
+<UL>
+  <LI>an interpreter that executes statements during the tree walk, and 
+  <LI>a compiler that generates code for a hypothetical stack-based machine, and 
+
+  <LI>a version that generates a syntax tree of the original program. </LI></UL>
+<P>To make things more concrete, here is a sample program,</P><PRE class=icode>x = 0;
+while (x &lt; 3) {
+    print x;
+    x = x + 1;
+}
+</PRE>
+<P>with output for an interpretive version,</P><PRE class=icode>0
+1
+2
+</PRE>
+<P>a compiler version,</P><PRE class=icode>    push    0
+    pop     x
+L000:
+    push    x
+    push    3
+    compLT
+    jz      L001
+    push    x
+    print
+    push    x
+    push    1
+    add
+    pop     x
+    jmp     L000
+L001:
+</PRE>
+<P>and a version that generates a syntax tree. 
+<BLOCKQUOTE><PRE class=code>Graph 0:
+
+    [=]
+     |
+   |----|
+   |    |
+ id(X) c(0)
+
+Graph 1:
+
+               while
+                 |
+     |----------------|
+     |                |
+    [&lt;]              [;]
+     |                |
+   |----|     |----------|
+   |    |     |          |
+ id(X) c(3) print       [=]
+              |          |
+              |     |-------|
+              |     |       |
+            id(X) id(X)    [+]
+                            |
+                          |----|
+                          |    |
+                        id(X) c(1)
+</PRE></BLOCKQUOTE>
+<P>The <A href="http://epaperpress.com/lexandyacc/calci.html">include file</A> 
+contains declarations for the syntax tree and symbol table. The symbol table, 
+<CODE>sym</CODE>, allows for single-character variable names. A node in the 
+syntax tree may hold a constant (<CODE>conNodeType</CODE>), an identifier 
+(<CODE>idNodeType</CODE>), or an internal node with an operator 
+(<CODE>oprNodeType</CODE>). A union encapsulates all three variants, and 
+<CODE>nodeType.type</CODE> is used to determine which structure we have. 
+<P>The <A href="http://epaperpress.com/lexandyacc/calcl.html">lex input file</A> 
+contains patterns for <CODE>VARIABLE</CODE> and <CODE>INTEGER</CODE> tokens. In 
+addition, tokens are defined for 2-character operators such as <CODE>EQ</CODE> 
+and <CODE>NE</CODE>. Single-character operators are simply returned as 
+themselves. 
+<P>The <A href="http://epaperpress.com/lexandyacc/calcy.html">yacc input 
+file</A> defines <CODE>YYSTYPE</CODE>, the type of <CODE>yylval</CODE>, as </P><PRE class=icode>%union {
+    int iValue;            /* integer value */
+    char sIndex;           /* symbol table index */
+    nodeType *nPtr;        /* node pointer */
+};
+</PRE>
+<P>This causes the following to be generated in <CODE>y.tab.h</CODE>:</P><PRE class=icode>typedef union {
+    int iValue;            /* integer value */
+    char sIndex;           /* symbol table index */
+    nodeType *nPtr;        /* node pointer */
+} YYSTYPE;
+extern YYSTYPE yylval;
+</PRE>
+<P>Constants, variables, and nodes can be represented by <CODE>yylval</CODE> in 
+the parser’s value stack. Notice the type definitions</P><PRE class=icode>%token &lt;iValue&gt; INTEGER
+%type &lt;nPtr&gt; expr
+</PRE>
+<P>This binds <CODE>expr</CODE> to <CODE>nPtr</CODE>, and <CODE>INTEGER</CODE> 
+to <CODE>iValue</CODE> in the <CODE>YYSTYPE</CODE> union. This is required so 
+that yacc can generate the correct code. For example, the rule</P><PRE class=icode>expr: INTEGER { $$ = con($1); }
+</PRE>
+<P>should generate the following code. Note that <CODE>yyvsp[0]</CODE> addresses 
+the top of the value stack, or the value associated with 
+<CODE>INTEGER</CODE>.</P><PRE class=icode>yylval.nPtr = con(yyvsp[0].iValue);
+</PRE>
+<P>The unary minus operator is given higher priority than binary operators as 
+follows:</P><PRE class=icode>%left GE LE EQ NE '&gt;' '&lt;'
+%left '+' '-'
+%left '*' '/'
+%nonassoc UMINUS
+</PRE>
+<P>The <CODE>%nonassoc</CODE> indicates no associativity is implied. It is 
+frequently used in conjunction with <CODE>%prec</CODE> to specify precedence of 
+a rule. Thus, we have</P><PRE class=icode>expr: '-' expr %prec UMINUS { $$ = node(UMINUS, 1, $2); }
+</PRE>
+<P>indicating that the precedence of the rule is the same as the precedence of 
+token <CODE>UMINUS</CODE>. And, as defined above, <CODE>UMINUS</CODE> has higher 
+precedence than the other operators. A similar technique is used to remove 
+ambiguity associated with the if-else statement (see <A 
+href="http://epaperpress.com/lexandyacc/if.html">If-Else Ambiguity</A>). 
+<P>The syntax tree is constructed bottom-up, allocating the leaf nodes when 
+variables and integers are reduced. When operators are encountered, a node is 
+allocated and pointers to previously allocated nodes are entered as operands. 
+<P>After the tree is built, function <CODE>ex</CODE> is called to do a 
+depth-first walk of the syntax tree. This results in operators being applied in 
+the order that they were encountered during parsing. Three versions of 
+<CODE>ex</CODE>, an <A 
+href="http://epaperpress.com/lexandyacc/calc1.html">interpretive version</A> a 
+<A href="http://epaperpress.com/lexandyacc/calc2.html">compiler version</A>, and 
+a version that <A href="http://epaperpress.com/lexandyacc/calcg.html">generates 
+a syntax tree</A>, are included. </P></BODY></HTML>

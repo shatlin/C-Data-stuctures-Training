@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)http://epaperpress.com/lexandyacc/err.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="err_files/format.css" type=text/css rel=stylesheet><LINK 
+href="err_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="err_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Error Messages</H1>
+<P>A nice compiler gives the user meaningful error messages. For example, not 
+much information is conveyed by the following message:</P><PRE class=icode>syntax error
+</PRE>
+<P>If we track the line number in lex, then we can at least give the user a line 
+number:</P><PRE class=icode>void yyerror(char *s) {
+    fprintf(stderr, "line %d: %s\n", yylineno, s);
+}
+</PRE>
+<P>When yacc discovers a parsing error, default action is to call 
+<CODE>yyerror</CODE>, and then return from <CODE>yylex</CODE> with a return 
+value of one. A more graceful action flushes the input stream to a statement 
+delimiter, and continues to scan:</P><PRE class=icode>stmt:
+         ';'
+        | expr ';'
+        | PRINT expr ';'
+        | VARIABLE '=' expr ';
+        | WHILE '(' expr ')' stmt    
+        | IF '(' expr ')' stmt %prec IFX
+        | IF '(' expr ')' stmt ELSE stmt
+        | '{' stmt_list '}'
+        | error ';'
+        | error '}'
+        ;
+</PRE>
+<P>The <CODE>error</CODE> token is a special feature of yacc that will match all 
+input until the token following <CODE>error</CODE> is found. For this example, 
+when yacc detects an error in a statement it will call <CODE>yyerror</CODE>, 
+flush input up to the next semicolon or brace, and resume scanning. 
+</P></BODY></HTML>

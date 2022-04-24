@@ -1,0 +1,11 @@
+HTTrack3.32+swf launched on Thu, 29 Apr 2004 10:25:04 at http://dinosaur.compilertools.net/ +*.png +*.gif +*.jpg +*.css +*.js -ad.doubleclick.net/*
+(winhttrack -qwC2%Ps2u1%sN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2004], %s -->" -%l "en, en, *" http://dinosaur.compilertools.net/ -O "C:\My Web Sites\yacc,C:\My Web Sites\yacc" +*.png +*.gif +*.jpg +*.css +*.js -ad.doubleclick.net/* -%A php3,php,php2,asp,jsp,pl,cfm,nsf=text/html )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+
+HTTrack Website Copier/3.32 mirror complete in 1 minutes 53 seconds : 57 links scanned, 54 files written (1594163 bytes overall) [1611629 bytes received at 14262 bytes/sec]
+(No errors, 0 warnings, 0 messages)

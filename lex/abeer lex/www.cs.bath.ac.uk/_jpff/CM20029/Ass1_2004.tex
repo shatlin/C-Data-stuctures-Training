@@ -1,0 +1,130 @@
+\documentstyle[fullpage,11pt]{article}
+\begin{document}
+\title{ \large \bf CM20029: Assignment 1}
+\author{}
+\date{}
+\maketitle
+\setlength{\parskip}{0.2in}
+
+\vskip -1in
+
+\begin{tabbing}
+Set by:\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \= J. P. Fitch \\
+Set on:                        \> 27 February 2004           \\
+Due Date and Place:            \> 11 May 2004, Pigeon Holes \\
+Time estimate:                 \> 10 hours                  \\
+Project Environment:           \> C and LEX/Flex OR Java and Jflex      \\
+Project Value:                 \> ${1 \over 2}$ of CM20029 coursework
+\end{tabbing}
+
+\section*{Introduction}
+
+One cannot understand the reality of writing language recognition
+schemes without writing a small parser, at the very least.  This
+assignment should ensure that you can write a lexer using a standard
+tool LEX, Flex, or JFlex and then use it in a simple top-down parser,
+such as might be employed as a user interface to a computer system.
+
+\section*{Part 1}
+
+\noindent Using LEX and associated C, or Jflex and associated JAVA,
+write a lexical analyser and symbol table for a subset of a C-like
+language which has the following lexical elements: 
+
+\begin{itemize}
+\item Comments starting with a {\tt //} and lasting to the end of the
+line, 
+\item Variables made from upper, lower-case letters, underscore and digits only,
+but starting with a lower-case letter or underscore
+\item Integers in decimal notation
+\item Strings, enclosed in {\tt "} characters, but no escaped
+characters ({\em i.e.}~no {\tt $\backslash$n})
+\item The keywords {\tt if else while int void char return}
+\item The operators and punctuation {\tt + - ( ) , ; = * / || \&\& }
+\end{itemize}
+
+\noindent The resulting program should be capable of reading an ASCII text and
+creating a stream of tokens (type/lexeme pairs), which can then
+printed in some simple representation or subjected to further
+computation.  A possible top-level testing function in C will be provided,
+together with a suitable header file.  You should assume that the
+tokens once created are passed to the next stage and the memory should
+not be reused.
+
+\section*{Part 2}
+
+Using ANSI C, or JAVA, write a recursive descent parser for the
+language defined by the following grammar which creates a parse tree.
+You must {\bf not} use a parser generator for this.  The grammar can be
+modified if necessary to allow a recursive descent parser, but the
+language must not change.
+
+\begin{tabular}{lcl}
+goal & $\Rightarrow$ & expression {\bf ;} \\
+goal & $\Rightarrow$ & ifstatement {\bf ;} \\
+expression & $\Rightarrow$ & term {\bf +} term \\
+expression & $\Rightarrow$ & term {\bf --} term \\
+expression & $\Rightarrow$ & term \\
+term & $\Rightarrow$ & factor {\bf *} factor \\
+term & $\Rightarrow$ & factor {\bf /} factor \\
+term & $\Rightarrow$ & factor \\
+factor & $\Rightarrow$ & variable \\
+factor & $\Rightarrow$ & integer \\
+factor & $\Rightarrow$ & string \\
+factor & $\Rightarrow$ & {\bf (} expression {\bf )} \\
+ifstatement & $\Rightarrow$ & {\bf if (} expression  {\bf )} goal {\bf else} goal\\
+ifstatement & $\Rightarrow$ & {\bf if (} expression  {\bf )} goal
+\end{tabular}
+
+\noindent
+where variable, integer and string are as defined in part 1 of the
+assignment.  You will need to use your lexer.  Not all tokens
+recognised by the lexer are used in the parser, but your solution
+should deal with all the tokens.
+
+The resulting program should be capable of reading an ASCII text and
+creating a printout of the parse tree in some format.
+
+\section*{Material to be handed In}
+
+You should submit program listings, together with your testing.  You
+may also include notes on your solution, restrictions and extensions,
+grammar changes or difficulties, as a separate document or as
+comments as appropriate.
+
+\noindent 
+{\bf Note:} Program listings should be in fixed spaced fonts.  Failure
+to do this makes it hard to identify spaces and layout, and will lose
+marks.
+
+\section*{Mark Scheme}
+
+\begin{tabular}{l r}
+Lexer:               &    30 \\
+Parser:              &    40 \\
+Testing:             &    20 \\
+Evidence of working: &    10  \\
+\hline
+Total:               &   100
+\end{tabular}
+
+\subsection*{Notes on Marking Scheme}
+
+A first class mark can be obtained by writing a complete lexer/parser
+which has been tested and which satisfies the usual software
+requirements of being readable and clearly maintainable.
+
+Second class performance would typically have an almost working
+program, or have a complete parser or lexer with a partial solution to
+the other component, with some clear testing, but lacking either the
+completeness or clarity one expects from the best attainable standard.
+
+Third class marks would be awarded to a program that while showing
+signs of working does not fit the above properties.
+
+Marks below a classified grade may be awarded if none of the above apply.
+
+\end{document}
+
+
+

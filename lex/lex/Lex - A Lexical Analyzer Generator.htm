@@ -1,0 +1,812 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML xmlns="http://www.w3.org/TR/REC-html40" xmlns:v = 
+"urn:schemas-microsoft-com:vml" xmlns:o = 
+"urn:schemas-microsoft-com:office:office" xmlns:w = 
+"urn:schemas-microsoft-com:office:word" xmlns:st1 = 
+"urn:schemas-microsoft-com:office:smarttags"><HEAD><TITLE>Lex - A Lexical Analyzer Generator</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content=Word.Document name=ProgId>
+<META content="MSHTML 6.00.2600.0" name=GENERATOR>
+<META content="Microsoft Word 10" name=Originator><LINK 
+href="LEXMANUAL_files/filelist.xml" rel=File-List><o:SmartTagType 
+name="PostalCode" 
+namespaceuri="urn:schemas-microsoft-com:office:smarttags"></o:SmartTagType><o:SmartTagType 
+name="State" 
+namespaceuri="urn:schemas-microsoft-com:office:smarttags"></o:SmartTagType><o:SmartTagType 
+name="City" 
+namespaceuri="urn:schemas-microsoft-com:office:smarttags"></o:SmartTagType><o:SmartTagType 
+name="place" 
+namespaceuri="urn:schemas-microsoft-com:office:smarttags"></o:SmartTagType><!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Shatlin</o:Author>
+  <o:LastAuthor>Shatlin</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>1</o:TotalTime>
+  <o:Created>2004-05-05T08:11:00Z</o:Created>
+  <o:LastSaved>2004-05-05T08:11:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>8078</o:Words>
+  <o:Characters>46049</o:Characters>
+  <o:Lines>383</o:Lines>
+  <o:Paragraphs>108</o:Paragraphs>
+  <o:CharactersWithSpaces>54019</o:CharactersWithSpaces>
+  <o:Version>10.2625</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>95</w:Zoom>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]--><!--[if !mso]>
+<OBJECT id=ieooui classid=clsid:38481807-CA0E-42D2-BF39-B33AF135CC4D></OBJECT>
+<STYLE>st1\:* {
+	BEHAVIOR: url(#ieooui)
+}
+</STYLE>
+<![endif]-->
+<STYLE>@page Section1 {size: 8.5in 11.0in; margin: 1.0in 1.25in 1.0in 1.25in; mso-header-margin: .5in; mso-footer-margin: .5in; mso-paper-source: 0; }
+P.MsoNormal {
+	FONT-SIZE: 12pt; MARGIN: 0in 0in 0pt; FONT-FAMILY: "Times New Roman"; mso-style-parent: ""; mso-pagination: widow-orphan; mso-fareast-font-family: "Times New Roman"
+}
+LI.MsoNormal {
+	FONT-SIZE: 12pt; MARGIN: 0in 0in 0pt; FONT-FAMILY: "Times New Roman"; mso-style-parent: ""; mso-pagination: widow-orphan; mso-fareast-font-family: "Times New Roman"
+}
+DIV.MsoNormal {
+	FONT-SIZE: 12pt; MARGIN: 0in 0in 0pt; FONT-FAMILY: "Times New Roman"; mso-style-parent: ""; mso-pagination: widow-orphan; mso-fareast-font-family: "Times New Roman"
+}
+P {
+	FONT-SIZE: 12pt; FONT-FAMILY: "Times New Roman"; mso-fareast-font-family: "Times New Roman"
+}
+PRE {
+	MARGIN-TOP: 0in; FONT-SIZE: 10pt; MARGIN-BOTTOM: 0pt; FONT-FAMILY: "Courier New"; mso-fareast-font-family: "Times New Roman"
+}
+SPAN.GramE {
+	mso-style-name: ""; mso-gram-e: yes
+}
+DIV.Section1 {
+	page: Section1
+}
+</STYLE>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+</style>
+<![endif]--><HEADER><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="2050">
+  <o:colormru v:ext="edit" colors="#fac862"/>
+  <o:colormenu v:ext="edit" fillcolor="#fac862"/>
+ </o:shapedefaults></xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]--></HEAD>
+<BODY lang=EN-US style="tab-interval: .5in" vLink=blue link=blue 
+bgColor=#fac862>
+<DIV class=Section1>
+<P class=MsoNormal><A 
+href="file:///E:/programming/lex/yacc/dinosaur.compilertools.net/index.html">The 
+Lex &amp; Yacc Page</A> </P>
+<H1>Lex - A Lexical Analyzer Generator </H1>
+<P class=MsoNormal style="MARGIN-BOTTOM: 12pt"><B><I>M. E. Lesk and E. 
+Schmidt</I></B> <BR style="mso-special-character: line-break"><![if !supportLineBreakNewLine]><BR 
+style="mso-special-character: line-break"><![endif]></P>
+<H2>ABSTRACT </H2>
+<P class=MsoNormal>Lex helps write programs whose control flow is directed by 
+instances of regular expressions in the input stream. It is well suited for 
+editor-script type transformations and for segmenting input in preparation for a 
+parsing routine. </P>
+<P>Lex source is a table of regular expressions and corresponding program 
+fragments. The table is translated to a program which reads an input stream, 
+copying it to an output stream and partitioning the input into strings which 
+match the given expressions. As each such string is recognized the corresponding 
+program fragment is executed. The recognition of the expressions is performed by 
+a deterministic finite automaton generated by Lex. The program fragments written 
+by the user are executed in the order in which the corresponding regular 
+expressions occur in the input stream. </P>
+<P>The lexical analysis programs written with Lex accept ambiguous 
+specifications and choose the longest match possible at each input point. If 
+necessary, substantial lookahead is performed on the input, but the input stream 
+will be backed up to the end of the current partition, so that the user has 
+general freedom to manipulate it. </P>
+<P>Lex can generate analyzers in either C or Ratfor, a language which can be 
+translated automatically to portable <SPAN class=GramE>Fortran</SPAN>. It is 
+available on the PDP-11 UNIX, Honeywell GCOS, and IBM OS systems. This manual, 
+however, will only discuss generating analyzers in C on the UNIX system, which 
+is the only supported form of Lex under UNIX Version 7. Lex is designed to 
+simplify interfacing with <SPAN class=GramE>Yacc, for those with access to this 
+compiler-compiler system.</SPAN> </P>
+<H2>1. Introduction. </H2>
+<P class=MsoNormal>Lex is a program generator designed for lexical processing of 
+character input streams. It accepts a high-level, problem oriented specification 
+for character string matching, and produces a program in a general purpose 
+language which recognizes regular expressions. The regular expressions are 
+specified by the user in the source specifications given to Lex. The Lex written 
+code recognizes these expressions in an input stream and partitions the input 
+stream into strings matching the expressions. At the boundaries between strings 
+program sections provided by the user are executed. The Lex source file 
+associates the regular expressions and the program fragments. As each expression 
+appears in the input to the program written by Lex, the corresponding fragment 
+is executed. </P>
+<P>The user supplies the additional code beyond expression matching needed to 
+complete his tasks, possibly including code written by other generators. The 
+program that recognizes the expressions is generated in the general purpose 
+programming language employed for the user's program fragments. Thus, a high 
+level expression language is provided to write the string expressions to be 
+matched while the user's freedom to write actions is unimpaired. This avoids 
+forcing the user who wishes to use a string manipulation language for input 
+analysis to write processing programs in the same and often inappropriate string 
+handling language. </P>
+<P>Lex is not a complete language, but rather a generator representing a new 
+language feature which can be added to different programming languages, called 
+``host languages.'' Just as general purpose languages can produce code to run on 
+different computer hardware, Lex can write code in different host languages. The 
+host language is used for the output code generated by Lex and also for the 
+program fragments added by the user. Compatible run-time libraries for the 
+different host languages are also provided. This makes Lex adaptable to 
+different environments and different users. Each application may be directed to 
+the combination of hardware and host language appropriate to the task, the 
+user's background, and the properties of local implementations. At present, the 
+only supported host language is C, although <SPAN class=GramE>Fortran</SPAN> (in 
+the form of Ratfor [2] has been available in the past. Lex itself exists on 
+UNIX, GCOS, and OS/370; but the code generated by Lex may be taken anywhere the 
+appropriate compilers exist. </P>
+<P>Lex turns the user's expressions and actions (called source in this memo) 
+into the host general-purpose language; the generated program is named yylex. 
+The yylex program will recognize expressions in a stream (called input in this 
+memo) and perform the specified actions for each expression as it is detected. 
+See Figure 1. </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>+-------+</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>Source -&gt; <SPAN class=GramE>|<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>Lex</SPAN><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>|<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>-&gt; yylex</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>+-------+</PRE><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>+-------+</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>Input -<SPAN class=GramE>&gt;<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>|</SPAN> yylex | -&gt; Output</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>+-------+</PRE><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>An overview of Lex</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>Figure 1</PRE>
+<P class=MsoNormal>For a trivial example, consider a program to delete from the 
+input all blanks or tabs at the ends of lines. </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>[ \</SPAN>t]+$<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>;</PRE>
+<P class=MsoNormal><SPAN class=GramE>is</SPAN> all that is required. The program 
+contains a %% delimiter to mark the beginning of the rules, and one rule. This 
+rule contains a regular expression which matches one or more instances of the 
+characters blank or tab (written \t for visibility, in accordance with the C 
+language convention) just prior to the end of a line. The brackets indicate the 
+character class made of blank and tab; the + indicates ``one or more ...''; and 
+the $ indicates ``end of line,'' as in QED. No action is specified, so the 
+program generated by Lex (yylex) will ignore these characters. Everything else 
+will be copied. To change any remaining string of blanks or tabs to a single 
+blank, add another rule: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>[ \</SPAN>t]+$<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>[ \</SPAN>t]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>" ");</PRE>
+<P class=MsoNormal>The finite automaton generated for this source will scan for 
+<SPAN class=GramE>both rules</SPAN> at once, observing at the termination of the 
+string of blanks or tabs whether or not there is a newline character, and 
+executing the desired rule action. The first rule matches all strings of blanks 
+or tabs at the end of lines, and the second rule all remaining strings of blanks 
+or tabs. </P>
+<P>Lex can be used alone for simple transformations, or for analysis and 
+statistics gathering on a lexical level. Lex can also be used with a parser 
+generator to perform the lexical analysis phase; it is particularly easy to 
+interface Lex and Yacc [3]. Lex programs recognize only regular expressions; 
+Yacc writes parsers that accept a large class of context free grammars, but 
+require a lower level analyzer to recognize input tokens. Thus, a combination of 
+Lex and Yacc is often appropriate. When used as a preprocessor for a later 
+parser generator, Lex is used to partition the input stream, and the parser 
+generator assigns structure to the resulting pieces. The flow of control in such 
+a case (which might be the first half of a compiler, for example) is shown in 
+Figure 2. Additional programs, written by other generators or by hand, can be 
+added easily to programs written by Lex. </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>lexical</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>grammar</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>rules</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>rules</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class=GramE>v</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>v</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>+---------+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>+---------+</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>Lex<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>|<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>|<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>Yacc</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>+---------+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>+---------+</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>v</SPAN><SPAN style="mso-spacerun: yes">&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>v</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>+---------+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>+---------+</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>Input -&gt; <SPAN class=GramE>|<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>yylex</SPAN><SPAN style="mso-spacerun: yes">&nbsp; </SPAN>| -&gt; | yyparse | -&gt; Parsed input</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>+---------+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>+---------+</PRE><PRE><o:p>&nbsp;</o:p></PRE><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>Lex with Yacc</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>Figure 2</PRE>
+<P class=MsoNormal>Yacc users will realize that the name yylex is what Yacc 
+expects its lexical analyzer to be named, so that the use of this name by Lex 
+simplifies interfacing. </P>
+<P>Lex generates a deterministic finite automaton from the regular expressions 
+in the source [4]. The automaton is interpreted, rather than compiled, in order 
+to save space. The result is still a fast analyzer. In particular, the time 
+taken by a Lex program to recognize and partition an input stream is 
+proportional to the length of the input. The number of Lex rules or the 
+complexity of the rules is not important in determining speed, unless rules 
+which include forward context require a significant amount of rescanning. What 
+does increase with the number and complexity of rules is the size of the finite 
+automaton, and therefore the size of the program generated by Lex. </P>
+<P>In the program written by Lex, the user's fragments (representing the actions 
+to be performed as each regular expression is found) are gathered as cases of a 
+switch. The automaton interpreter directs the control flow. 
+<st1:place>Opportunity</st1:place> is provided for the user to insert either 
+declarations or additional statements in the routine containing the actions, or 
+to add subroutines outside this action routine. </P>
+<P>Lex is not limited to source which can be interpreted on the basis of one 
+character lookahead. For example, if there are two rules, one looking for ab and 
+another for abcdefg, and the input stream is abcdefh, Lex will recognize ab and 
+leave the input pointer just before cd. . . Such backup is more costly than the 
+processing of simpler languages. </P>
+<H2>2. Lex Source. </H2>
+<P class=MsoNormal>The general format of Lex source is: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>definitions</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>rules</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>user</SPAN> subroutines}</PRE>
+<P class=MsoNormal><SPAN class=GramE>where</SPAN> the definitions and the user 
+subroutines are often omitted. The second %% is optional, but the first is 
+required to mark the beginning of the rules. The absolute minimum Lex program is 
+thus </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>%%</PRE>
+<P class=MsoNormal>(<SPAN class=GramE>no</SPAN> definitions, no rules) which 
+translates into a program which copies the input to the output unchanged. </P>
+<P>In the outline of Lex programs shown above, the rules represent the user's 
+control decisions; they are a table, in which the left column contains regular 
+expressions (see section 3) and the right column contains actions, program 
+fragments to be executed when the expressions are recognized. Thus an individual 
+rule might appear </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>integer</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>printf("found keyword INT");</PRE>
+<P class=MsoNormal><SPAN class=GramE>to</SPAN> look for the string integer in 
+the input stream and print the message ``found keyword INT'' whenever it 
+appears. In this example the host procedural language is C and the C library 
+function printf is used to print the string. The end of the expression is 
+indicated by the first blank or tab character. If the action is merely a single 
+C expression, it can just be given on the right side of the line; if it is 
+compound, or takes more than a line, it should be enclosed in braces. As a 
+slightly more useful example, suppose it is desired to change a number of words 
+from British to American spelling. Lex rules such as </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>colour</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>printf("color");</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>mechanise</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>printf("mechanize");</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>petrol</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>printf("gas");</PRE>
+<P class=MsoNormal><SPAN class=GramE>would</SPAN> be a start. These rules are 
+not quite enough, since the word petroleum would become gaseum; a way of dealing 
+with this will be described later. </P>
+<H2>3. Lex Regular Expressions. </H2>
+<P class=MsoNormal>The definitions of regular expressions are very similar to 
+those in QED [5]. A regular expression specifies a set of strings to be matched. 
+It contains text characters (which match the corresponding characters in the 
+strings being compared) and operator characters (which specify repetitions, 
+choices, and other features). The letters of the alphabet and the digits are 
+always text characters; thus the regular expression </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>integer</SPAN></PRE>
+<P class=MsoNormal><SPAN class=GramE>matches</SPAN> the string integer wherever 
+it appears and the expression </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>a57D</PRE>
+<P class=MsoNormal><SPAN class=GramE>looks</SPAN> for the string a57D. </P>
+<P><SPAN class=GramE>Operators.</SPAN> The operator characters are </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>" \ [ ] ^ - ? . * + | ( ) $ / { } % &lt; &gt;</PRE>
+<P class=MsoNormal><SPAN class=GramE>and</SPAN> if they are to be used as text 
+characters, an escape should be used. The quotation mark operator (") indicates 
+that whatever is contained between a pair of quotes is to be taken as text 
+characters. Thus </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>xyz"++"</PRE>
+<P class=MsoNormal><SPAN class=GramE>matches</SPAN> the string xyz++ when it 
+appears. Note that a part of a string may be quoted. It is harmless but 
+unnecessary to quote an ordinary text character; the expression </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>"<SPAN class=GramE>xyz</SPAN>++"</PRE>
+<P class=MsoNormal><SPAN class=GramE>is</SPAN> the same as the one above. Thus 
+by quoting every non-alphanumeric character being used as a text character, the 
+user can avoid remembering the list above of current operator characters, and is 
+safe should further extensions to Lex lengthen the list. </P>
+<P>An operator character may also be turned into a text character by preceding 
+it with \ as in </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>xyz\+\+</PRE>
+<P class=MsoNormal><SPAN class=GramE>which</SPAN> is another, less readable, 
+equivalent of the above expressions. Another use of the quoting mechanism is to 
+get a blank into an expression; normally, as explained above, blanks or tabs end 
+a rule. Any blank character not contained within [] (see below) must be quoted. 
+Several normal C escapes with \ are recognized: \n is newline, \t is tab, and \b 
+is backspace. To enter \ itself, use \\. Since newline is illegal in an 
+expression, \n must be used; it is not required to escape tab and backspace. 
+Every character but blank, tab, newline and the list above is always a text 
+character. </P>
+<P><SPAN class=GramE>Character classes.</SPAN> Classes of characters can be 
+specified using the operator pair []. The construction [<SPAN 
+class=GramE>abc</SPAN>] matches a single character, which may be a, b, or c. 
+Within square brackets, most operator meanings are ignored. Only three 
+characters are special: these are \ - and ^. The - character indicates ranges. 
+For example, </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[<SPAN class=GramE>a-z0-9</SPAN>&lt;&gt;_]</PRE>
+<P class=MsoNormal><SPAN class=GramE>indicates</SPAN> the character class 
+containing all the lower case letters, the digits, the angle brackets, and 
+underline. Ranges may be given in either order. Using - between any pair of 
+characters which are not both upper case letters, <SPAN class=GramE>both lower 
+case letters, or</SPAN> both digits is implementation dependent and will get a 
+warning message. (E.g., [0-z] in ASCII is many more characters than it is in 
+EBCDIC). If it is desired to include the character - in a character class, it 
+should be first or last; thus </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[-+0-9]</PRE>
+<P class=MsoNormal><SPAN class=GramE>matches</SPAN> all the digits and the two 
+signs. </P>
+<P>In character classes, the ^ operator must appear as the first character after 
+the left bracket; it indicates that the resulting string is to be complemented 
+with respect to the computer character set. Thus </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[^<SPAN class=GramE>abc</SPAN>]</PRE>
+<P class=MsoNormal><SPAN class=GramE>matches</SPAN> all characters except a, b, 
+or c, including all special or control characters; or </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[^a-zA-Z]</PRE>
+<P class=MsoNormal><SPAN class=GramE>is</SPAN> any character which is not a 
+letter. The \ character provides the usual escapes within character class 
+brackets. </P>
+<P><SPAN class=GramE>Arbitrary character.</SPAN> To match almost any character, 
+the operator <SPAN class=GramE>character .</SPAN> <SPAN class=GramE>is</SPAN> 
+the class of all characters except newline. Escaping into octal is possible 
+although non-portable: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[\40-\176]</PRE>
+<P class=MsoNormal><SPAN class=GramE>matches</SPAN> all printable characters in 
+the ASCII character set, from octal 40 (blank) to octal 176 (tilde). </P>
+<P><SPAN class=GramE>Optional expressions.</SPAN> The <SPAN class=GramE>operator 
+?</SPAN> <SPAN class=GramE>indicates</SPAN> an optional element of an 
+expression. Thus </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>ab?c</SPAN></PRE>
+<P class=MsoNormal><SPAN class=GramE>matches</SPAN> either ac or abc. </P>
+<P><SPAN class=GramE>Repeated expressions.</SPAN> Repetitions of classes are 
+indicated by the operators * and +. </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>a</SPAN>*</PRE>
+<P class=MsoNormal><SPAN class=GramE>is</SPAN> any number of consecutive a 
+characters, including zero; while </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>a</SPAN>+</PRE>
+<P class=MsoNormal><SPAN class=GramE>is</SPAN> one or more instances of a. For 
+example, </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>[<SPAN class=GramE>a-z</SPAN>]+</PRE>
+<P class=MsoNormal><SPAN class=GramE>is</SPAN> all strings of lower case 
+letters. And </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[A-Za-z][A-Za-z0-9]*</PRE>
+<P class=MsoNormal><SPAN class=GramE>indicates</SPAN> all alphanumeric strings 
+with a leading alphabetic character. This is a typical expression for 
+recognizing identifiers in computer languages. </P>
+<P><SPAN class=GramE>Alternation and Grouping.</SPAN> The operator | indicates 
+alternation: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(ab|cd)</PRE>
+<P class=MsoNormal><SPAN class=GramE>matches</SPAN> either ab or cd. Note that 
+parentheses are used for grouping, although they are not necessary on the 
+outside level; </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>ab|cd</PRE>
+<P class=MsoNormal><SPAN class=GramE>would</SPAN> have sufficed. Parentheses can 
+be used for more complex expressions: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(ab|cd+)<SPAN class=GramE>?(</SPAN>ef)*</PRE>
+<P class=MsoNormal><SPAN class=GramE>matches</SPAN> such strings as abefef, 
+efefef, cdef, or cddd; but not abc, abcd, or abcdef. </P>
+<P><SPAN class=GramE>Context sensitivity.</SPAN> Lex will recognize a small 
+amount of surrounding context. The two simplest operators for this are ^ and $. 
+If the first character of an expression is ^, the expression will only be 
+matched at the beginning of a line (after a newline character, or at the 
+beginning of the input stream). This can never conflict with the other meaning 
+of ^, complementation of character classes, since that only applies within the 
+[] operators. If the very last character is $, the expression will only be 
+matched at the end of a line (when immediately followed by newline). The latter 
+operator is a special case of the / operator character, which indicates trailing 
+context. The expression </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>ab/cd</SPAN></PRE>
+<P class=MsoNormal><SPAN class=GramE>matches</SPAN> the string ab, but only if 
+followed by cd. Thus </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>ab</SPAN>$</PRE>
+<P class=MsoNormal><SPAN class=GramE>is</SPAN> the same as </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>ab</SPAN>/\n</PRE>
+<P class=MsoNormal>Left context is handled in Lex by start conditions as 
+explained in section 10. If a rule is only to be executed when the Lex automaton 
+interpreter is in start condition x, the rule should be prefixed by </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>&lt;x&gt;</PRE>
+<P class=MsoNormal><SPAN class=GramE>using</SPAN> the angle bracket operator 
+characters. If we considered ``being at the beginning of a line'' to be start 
+condition ONE, then the ^ operator would be equivalent to </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>&lt;ONE&gt;</PRE>
+<P class=MsoNormal>Start conditions are explained more fully later. </P>
+<P><SPAN class=GramE>Repetitions and Definitions.</SPAN> The operators {} 
+specify either repetitions (if they enclose numbers) or definition expansion (if 
+they enclose a name). For example </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>digit</SPAN>}</PRE>
+<P class=MsoNormal><SPAN class=GramE>looks</SPAN> for a predefined string named 
+digit and inserts it at that point in the expression. The definitions are given 
+in the first part of the Lex input, before the rules. In contrast, </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>a{</SPAN>1,5}</PRE>
+<P class=MsoNormal><SPAN class=GramE>looks</SPAN> for 1 to 5 occurrences of a. 
+</P>
+<P>Finally, initial % is special, being the separator for Lex source segments. 
+</P>
+<H2>4. Lex Actions. </H2>
+<P class=MsoNormal>When an expression written as above is matched, Lex executes 
+the corresponding action. This section describes some features of Lex which aid 
+in writing actions. Note that there is a default action, which consists of 
+copying the input to the output. This is performed on all strings not otherwise 
+matched. Thus the Lex <SPAN class=GramE>user</SPAN> who wishes to absorb the 
+entire input, without producing any output, must provide rules to match 
+everything. When Lex is being used with Yacc, this is the normal situation. One 
+may consider that actions are what <SPAN class=GramE>is</SPAN> done instead of 
+copying the input to the output; thus, in general, a rule which merely copies 
+can be omitted. Also, a character combination which is omitted from the rules 
+and which appears as input is likely to be printed on the output, thus calling 
+attention to the gap in the rules. </P>
+<P>One of the simplest things that can be done is to ignore the input. 
+Specifying a C null statement<SPAN class=GramE>, ;</SPAN> as an action causes 
+this result. A frequent rule is </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>[ \</SPAN>t\n]<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>;</PRE>
+<P class=MsoNormal><SPAN class=GramE>which</SPAN> causes the three spacing 
+characters (blank, tab, and newline) to be ignored. </P>
+<P>Another easy way to avoid writing actions is the action character |, which 
+indicates that the action for this rule is the action for the next rule. The 
+previous example could also have been written </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>" "</PRE><PRE> <SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>"\t"</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>"\n"</PRE>
+<P class=MsoNormal><SPAN class=GramE>with</SPAN> the same result, although in 
+different style. The quotes around \n and \t are not required. </P>
+<P>In more complex actions, the user will often want to know the actual text 
+that matched some expression like [a-z<SPAN class=GramE>]+</SPAN>. Lex leaves 
+this text in an external character array named yytext. Thus, to print the name 
+found, a rule like </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[<SPAN class=GramE>a-z</SPAN>]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"%s", yytext);</PRE>
+<P class=MsoNormal><SPAN class=GramE>will</SPAN> print the string in yytext. The 
+C function printf accepts a format argument and data to be printed; in this 
+case, the format is ``print string'' (% indicating data conversion, and s 
+indicating string type), and the data are the characters in yytext. So this just 
+places the matched string on the output. This action is so common that it may be 
+written as ECHO: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[<SPAN class=GramE>a-z</SPAN>]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>ECHO;</PRE>
+<P class=MsoNormal><SPAN class=GramE>is</SPAN> the same as the above. Since the 
+default action is just to print the characters found, one might ask why give a 
+rule, like this one, which merely specifies the default action? Such rules are 
+often required to avoid matching some other rule which is not desired. For 
+example, if there is a rule which matches read it will normally match the 
+instances of read contained in bread or readjust; to avoid this, a rule of the 
+form [a-z]+ is needed. This is explained further below. </P>
+<P>Sometimes it is more convenient to know the end of what has been found; hence 
+Lex also provides a count yyleng of the number of characters matched. To count 
+both the number of words and the number of characters in words in the input, the 
+user might write [a-zA-Z<SPAN class=GramE>]+</SPAN> {words++; chars += yyleng;} 
+which accumulates in chars the number of characters in the words recognized. The 
+last character in the string matched can be accessed by </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class=GramE>yytext[</SPAN>yyleng-1]</PRE>
+<P>Occasionally, a Lex action may decide that a rule has not recognized the 
+correct span of characters. Two routines are provided to aid with this 
+situation. First, <SPAN class=GramE>yymore(</SPAN>) can be called to indicate 
+that the next input expression recognized is to be tacked on to the end of this 
+input. Normally, the next input string would overwrite the current entry in 
+yytext. Second, yyless (n) may be called to indicate that not all the characters 
+matched by the currently successful expression are wanted right now. The 
+argument n indicates the number of characters in yytext to be retained. Further 
+characters previously matched are returned to the input. This provides the same 
+sort of lookahead offered by the / operator, but in a different form. </P>
+<P>Example: Consider a language which defines a string as a set of characters 
+between quotation (") marks, and provides that to include a <SPAN class=GramE>" 
+in</SPAN> a string it must be preceded by a \. The regular expression which 
+matches that is somewhat confusing, so that it might be preferable to write </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>\"[^"]*<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>if</SPAN> (yytext[yyleng-1] == '\\')</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>yymore(</SPAN>);</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>else</SPAN></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>... <SPAN class=GramE>normal</SPAN> user processing</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>}</PRE>
+<P class=MsoNormal><SPAN class=GramE>which</SPAN> will, when faced with a string 
+such as "abc\"def" first match the five characters "abc\; then the call to 
+yymore() will cause the next part of the string, "def, to be tacked on the end. 
+Note that the final quote terminating the string should be picked up in the code 
+labeled ``normal processing''. </P>
+<P>The function <SPAN class=GramE>yyless(</SPAN>) might be used to reprocess 
+text in various circumstances. Consider the C problem of distinguishing the 
+ambiguity of ``=-a''. Suppose it is desired to treat this as ``=- a'' but print 
+a message. A rule might be </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>=-[a-zA-Z]<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"Op (=-) ambiguous\n");</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>yyless(</SPAN>yyleng-1);</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>... <SPAN class=GramE>action</SPAN> for =- ...</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>}</PRE>
+<P class=MsoNormal><SPAN class=GramE>which</SPAN> prints a message, returns the 
+letter after the operator to the input stream, and treats the operator as 
+``=-''. Alternatively it might be desired to treat this as ``= -a''. To do this, 
+just return the minus sign as well as the letter to the input: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>=-[a-zA-Z]<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"Op (=-) ambiguous\n");</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>yyless(</SPAN>yyleng-2);</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>... <SPAN class=GramE>action</SPAN> for = ...</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>}</PRE>
+<P class=MsoNormal><SPAN class=GramE>will</SPAN> perform the other 
+interpretation. Note that the expressions for the two cases might more easily be 
+written </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>=-<SPAN class=GramE>/[</SPAN>A-Za-z]</PRE>
+<P class=MsoNormal><SPAN class=GramE>in</SPAN> the first case and </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>=/-[A-Za-z]</PRE>
+<P class=MsoNormal><SPAN class=GramE>in</SPAN> the second; no backup would be 
+required in the rule action. It is not necessary to recognize the whole 
+identifier to observe the ambiguity. The possibility of ``=-3'', however, makes 
+</P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>=-<SPAN class=GramE>/[</SPAN>^ \t\n]</PRE>
+<P class=MsoNormal><SPAN class=GramE>a</SPAN> still better rule. </P>
+<P>In addition to these routines, Lex also permits access to the I/O routines it 
+uses. They are: </P>
+<P>1) <SPAN class=GramE>input(</SPAN>) which returns the next input character; 
+</P>
+<P>2) <SPAN class=GramE>output(</SPAN>c) which writes the character c on the 
+output; and </P>
+<P>3) <SPAN class=GramE>unput(</SPAN>c) pushes the character c back onto the 
+input stream to be read later by input(). </P>
+<P>By default these routines are provided as macro definitions, but the user can 
+override them and supply private versions. These routines define the 
+relationship between external files and internal characters, and must all be 
+retained or modified consistently. They may be redefined, to cause input or 
+output to be transmitted to or from strange places, including other programs or 
+internal memory; but the character set used must be consistent in all routines; 
+a value of zero returned by input must mean end of file; and the relationship 
+between unput and input must be retained or the Lex lookahead will not work. Lex 
+does not look ahead at all if it does not have to, but every rule ending in + 
+<SPAN class=GramE>* ?</SPAN> <SPAN class=GramE>or</SPAN> $ or containing / 
+implies lookahead. Lookahead is also necessary to match an expression that is a 
+prefix of another expression. See below for a discussion of the character set 
+used by Lex. The standard Lex library imposes a 100 character limit on backup. 
+</P>
+<P>Another Lex library routine that the user will sometimes want to redefine is 
+<SPAN class=GramE>yywrap(</SPAN>) which is called whenever Lex reaches an 
+end-of-file. If yywrap returns a 1, Lex continues with the normal wrapup on end 
+of input. Sometimes, however, it is convenient to arrange for more input to 
+arrive from a new source. In this case, the user should provide <SPAN 
+class=GramE>a</SPAN> yywrap which arranges for new input and returns 0. This 
+instructs Lex to continue processing. The default yywrap always returns 1. </P>
+<P>This routine is also a convenient place to print tables, summaries, etc. at 
+the end of a program. Note that it is not possible to write a normal rule which 
+recognizes end-of-file; the only access to this condition is through yywrap. In 
+fact, unless a private version of <SPAN class=GramE>input(</SPAN>) is supplied a 
+file containing nulls cannot be handled, since a value of 0 returned by input is 
+taken to be end-of-file. </P>
+<H2>5. Ambiguous Source Rules. </H2>
+<P class=MsoNormal>Lex can handle ambiguous specifications. When more than one 
+expression can match the current input, Lex chooses as follows: </P>
+<P>1) The longest match is preferred. </P>
+<P>2) Among rules which matched the same number of characters, the rule given 
+first is preferred. </P>
+<P>Thus, suppose the rules </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>integer</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>keyword action ...;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[<SPAN class=GramE>a-z</SPAN>]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>identifier</SPAN> action ...;</PRE>
+<P class=MsoNormal><SPAN class=GramE>to</SPAN> be given in that order. If the 
+input is integers, it is taken as an identifier, because [a-z<SPAN 
+class=GramE>]+</SPAN> matches 8 characters while integer matches only 7. If the 
+input is integer, both rules match 7 characters, and the keyword rule is 
+selected because it was given first. Anything shorter (e.g. int) will not match 
+the expression integer and so the identifier interpretation is used. </P>
+<P>The principle of preferring the longest match makes rules containing 
+expressions <SPAN class=GramE>like .</SPAN>* dangerous. For example<SPAN 
+class=GramE>, '.</SPAN>*' might seem a good way of recognizing a string in 
+single quotes. But it is an invitation for the program to read far ahead, 
+looking for a distant single quote. Presented with the input </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>'<SPAN class=GramE>first</SPAN>' quoted string here, 'second' here</PRE>
+<P class=MsoNormal><SPAN class=GramE>the</SPAN> above expression will match </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>'<SPAN class=GramE>first</SPAN>' quoted string here, 'second'</PRE>
+<P class=MsoNormal><SPAN class=GramE>which</SPAN> is probably not what was 
+wanted. A better rule is of the form </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>'[^'\n]*'</PRE>
+<P class=MsoNormal><SPAN class=GramE>which</SPAN>, on the above input, will stop 
+after 'first'. The consequences of errors like this are mitigated by the fact 
+that <SPAN class=GramE>the .</SPAN> <SPAN class=GramE>operator</SPAN> will not 
+match newline. Thus expressions <SPAN class=GramE>like .</SPAN>* stop on the 
+current line. Don't try to defeat this with expressions like (.|\n<SPAN 
+class=GramE>)+</SPAN> or equivalents; the Lex generated program will try to read 
+the entire input file, causing internal buffer overflows. </P>
+<P>Note that Lex is normally partitioning the input stream, not searching for 
+all possible matches of each expression. This means that each character is 
+accounted for once and only once. For example, suppose it is desired to count 
+occurrences of both <SPAN class=GramE>she and he</SPAN> in an input text. Some 
+Lex rules to do this might be </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>she</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>s++;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>he</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>h++;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>\n<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>;</PRE>
+<P class=MsoNormal><SPAN class=GramE>where</SPAN> the last two rules ignore 
+everything besides he and she. Remember <SPAN class=GramE>that .</SPAN> <SPAN 
+class=GramE>does</SPAN> not include newline. Since she includes <SPAN 
+class=GramE>he</SPAN>, Lex will normally not recognize the instances of he 
+included in she, since once it has passed a she those characters are gone. </P>
+<P>Sometimes the user would like to override this choice. The action REJECT 
+means ``go do the next alternative.'' It causes whatever rule was second choice 
+after the current rule to be executed. The position of the input pointer is 
+adjusted accordingly. Suppose the user really wants to count the included 
+instances of <SPAN class=GramE>he</SPAN>: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>she</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>{s++; REJECT;}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>he</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>{h++; REJECT;}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>\n<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>;</PRE>
+<P class=MsoNormal><SPAN class=GramE>these</SPAN> rules are one way of changing 
+the previous example to do just that. After counting each expression, it is 
+rejected; whenever appropriate, the other expression will then be counted. In 
+this example, of course, the user could note that she includes <SPAN 
+class=GramE>he</SPAN> but not vice versa, and omit the REJECT action on he; in 
+other cases, however, it would not be possible a priori to tell which input 
+characters were in both classes. </P>
+<P>Consider the two rules </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>a[</SPAN>bc]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>{ ... ; REJECT;}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>a[</SPAN>cd]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>{ ... ; REJECT;}</PRE>
+<P class=MsoNormal>If the input is ab, only the first rule matches, and on ad 
+only the second matches. The input string accb matches the first rule for four 
+characters and then the second rule for three characters. In contrast, the input 
+accd agrees with the second rule for four characters and then the first rule for 
+three. </P>
+<P>In general, REJECT is useful whenever the purpose of Lex is not to partition 
+the input stream but to detect all examples of some items in the input, and the 
+instances of these items may overlap or include each other. Suppose a digram 
+table of the input is desired; normally the digrams overlap, that is the word 
+the is considered to contain both <SPAN class=GramE>th</SPAN> and he. Assuming a 
+two-dimensional array named digram to be incremented, the appropriate source is 
+</P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[<SPAN class=GramE>a-z</SPAN>][<SPAN class=GramE>a-z</SPAN>]<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>digram[</SPAN>yytext[0]][yytext[1]]++;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>REJECT;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>\n<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>;</PRE>
+<P class=MsoNormal><SPAN class=GramE>where</SPAN> the REJECT is necessary to 
+pick up a letter pair beginning at every character, rather than at every other 
+character. </P>
+<H2>6. Lex Source Definitions. </H2>
+<P class=MsoNormal>Remember the format of the Lex source: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>{<SPAN class=GramE>definitions</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>rules</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>user</SPAN> routines}</PRE>
+<P class=MsoNormal>So far only the rules have been described. The user needs 
+additional options, though, to define variables for use in his program and for 
+use by Lex. These can go either in the definitions section or in the rules 
+section. </P>
+<P>Remember that Lex is turning the rules into a program. Any source not 
+intercepted by Lex is copied into the generated program. There are three classes 
+of such things. </P>
+<P>1) Any line which is not part of a Lex rule or action which begins with a 
+blank or tab is copied into the Lex generated program. Such source input prior 
+to the first %% delimiter will be external to any function in the code; if it 
+appears immediately after the first %%, it appears in an appropriate place for 
+declarations in the function written by Lex which contains the actions. This 
+material must look like program fragments, and should precede the first Lex 
+rule. As a side effect of the above, lines which begin with a blank or tab, and 
+which contain a comment, are passed through to the generated program. This can 
+be used to include comments in either the Lex source or the generated code. The 
+comments should follow the host language convention. </P>
+<P>2) Anything included between lines containing only %{ and %} is copied out as 
+above. The delimiters are discarded. This format permits entering text like 
+preprocessor statements that must begin in column 1, or copying lines that do 
+not look like programs. </P>
+<P>3) Anything after the third %% delimiter, regardless of formats, etc., is 
+copied out after the Lex output. </P>
+<P>Definitions intended for Lex are given before the first %% delimiter. Any 
+line in this section not contained between %{ and %}, and begining in column 1, 
+is assumed to define Lex substitution strings. The format of such lines is name 
+translation and it causes the string given as a translation to be associated 
+with the name. The name and translation must be separated by at least one blank 
+or tab, and the name must begin with a letter. The translation can then be 
+called out by the {name} syntax in a rule. Using {D} for the digits and {E} for 
+an exponent field, for example, might abbreviate rules to recognize numbers: 
+</P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>D<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[0-9]</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>E<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[DEde<SPAN class=GramE>][</SPAN>-+]?{D}+</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{D}+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"integer");</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{D}+"."{D}<SPAN class=GramE>*({E})?</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{D}*"."{D}<SPAN class=GramE>+(</SPAN>{E})?<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{D}<SPAN class=GramE>+{</SPAN>E}</PRE>
+<P class=MsoNormal>Note the first two rules for real numbers; both require a 
+decimal point and contain an optional exponent field, but the first requires at 
+least one digit before the decimal point and the second requires at least one 
+digit after the decimal point. To correctly handle the problem posed by a <SPAN 
+class=GramE>Fortran</SPAN> expression such as 35.EQ.I, which does not contain a 
+real number, a context-sensitive rule such as </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[0-9]+/"."EQ<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"integer");</PRE>
+<P class=MsoNormal><SPAN class=GramE>could</SPAN> be used in addition to the 
+normal rule for integers. </P>
+<P>The definitions section may also contain other commands, including the 
+selection of a host language, a character set table, a list of start conditions, 
+or adjustments to the default size of arrays within Lex itself for larger source 
+programs. These possibilities are discussed below under ``Summary of Source 
+Format,'' section 12. </P>
+<H2>7. Usage. </H2>
+<P class=MsoNormal>There are two steps in compiling a Lex source program. First, 
+the Lex source must be turned into a generated program in the host general 
+purpose language. Then this program must be compiled and loaded, usually with a 
+library of Lex subroutines. The generated program is on a file named lex.yy.c. 
+The I/O library is defined in terms of the C standard library [6]. </P>
+<P>The C programs generated by Lex are slightly different on OS/370, because the 
+OS compiler is less powerful than the UNIX or GCOS compilers, and does less at 
+compile time. C programs generated on GCOS and UNIX <SPAN class=GramE>are</SPAN> 
+the same. </P>
+<P><SPAN class=GramE>UNIX.</SPAN> The library is accessed by the loader flag 
+-ll. So an appropriate set of commands is lex source cc lex.yy.c -ll <SPAN 
+class=GramE>The</SPAN> resulting program is placed on the usual file a.out for 
+later execution. To use Lex with Yacc see below. Although the default Lex I/O 
+routines use the C standard library, the Lex automata themselves do not do so; 
+if private versions of input, output and unput are given, the library can be 
+avoided. </P>
+<H2>8. Lex and Yacc. </H2>
+<P class=MsoNormal>If you want to use Lex with Yacc, note that what Lex writes 
+is a program named <SPAN class=GramE>yylex(</SPAN>), the name required by Yacc 
+for its analyzer. Normally, the default main program on the Lex library calls 
+this routine, but if Yacc is loaded, and its main program is used, Yacc will 
+call <SPAN class=GramE>yylex(</SPAN>). In this case each Lex rule should end 
+with </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>return(</SPAN>token);</PRE>
+<P class=MsoNormal><SPAN class=GramE>where</SPAN> the appropriate token value is 
+returned. An easy way to get access to Yacc's names for tokens is to compile the 
+Lex output file as <SPAN class=GramE>part of the Yacc output file by placing the 
+line # include</SPAN> "lex.yy.c" in the last section of Yacc input. Supposing 
+the grammar to be named ``good'' and the lexical rules to be named ``better'' 
+the UNIX command sequence can just be: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>yacc</SPAN> good</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>lex</SPAN> better</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>cc y.tab.c -ly -ll</PRE>
+<P class=MsoNormal>The Yacc library (-ly) should be loaded before the Lex 
+library, to obtain a main program which invokes the Yacc parser. The generations 
+of Lex and Yacc programs can be done in either order. </P>
+<H2>9. Examples. </H2>
+<P class=MsoNormal>As a trivial problem, consider copying an input file while 
+adding 3 to every positive number divisible by 7. Here is a suitable Lex source 
+program </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>int</SPAN> k;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[0-9]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>k = <SPAN class=GramE>atoi(</SPAN>yytext);</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class=GramE>if</SPAN> (k%7 == 0)</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"%d", k+3);</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>else</SPAN></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"%d",k);</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>}</PRE>
+<P class=MsoNormal><SPAN class=GramE>to</SPAN> do just that. The rule [0-9<SPAN 
+class=GramE>]+</SPAN> recognizes strings of digits; atoi converts the digits to 
+binary and stores the result in k. The operator % (remainder) is used to check 
+whether k is divisible by 7; if it is, it is incremented by 3 as it is written 
+out. It may be objected that this program will alter such input items as 49.63 
+or X7. Furthermore, it increments the absolute value of all negative numbers 
+divisible by 7. To avoid this, just add a few more rules after the active one, 
+as here: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class=GramE>int</SPAN> k;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>-?[</SPAN>0-9]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>k = <SPAN class=GramE>atoi(</SPAN>yytext);</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"%d",</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>k%</SPAN>7 == 0 ? k+<SPAN class=GramE>3 :</SPAN> k);</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>-?[</SPAN>0-9.]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>ECHO;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[A-Za-z][A-Za-z0-9]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>ECHO;</PRE>
+<P class=MsoNormal>Numerical strings containing a ``.'' or <SPAN 
+class=GramE>preceded</SPAN> by a letter will be picked up by one of the last two 
+rules, and not changed. The if-else has been replaced by a C conditional 
+expression to save space; the form a<SPAN class=GramE>?b:c</SPAN> means ``if a 
+then b else c''. </P>
+<P>For an example of statistics gathering, here is a program which histograms 
+the lengths of words, where a word is defined as a string of letters. </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>int</SPAN> lengs[100];</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[<SPAN class=GramE>a-z</SPAN>]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN><SPAN class=GramE>lengs[</SPAN>yyleng]++;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>\n<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>yywrap()</SPAN></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>int</SPAN> i;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"Length<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>No. words\n");</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>for(</SPAN>i=0; i&lt;100; i++)</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>if</SPAN> (lengs[i] &gt; 0)</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"%5d%10d\n",i,lengs[i]);</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>return(</SPAN>1);</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>}</PRE>
+<P class=MsoNormal>This program accumulates the histogram, while producing no 
+output. At the end of the input it prints the table. The final statement <SPAN 
+class=GramE>return(</SPAN>1); indicates that Lex is to perform wrapup. If yywrap 
+returns zero (false) it implies that further input is available and the program 
+is to continue reading and processing. To provide <SPAN class=GramE>a</SPAN> 
+yywrap that never returns true causes an infinite loop. </P>
+<P>As a larger example, here are some parts of a program written by N. L. 
+Schryer to convert double precision <SPAN class=GramE>Fortran</SPAN> to single 
+precision Fortran. Because <SPAN class=GramE>Fortran</SPAN> does not distinguish 
+upper and lower case letters, this routine begins by defining a set of classes 
+including both cases of each letter: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>a</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[aA]</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>b</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[bB]</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>c</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[cC]</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>...</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>z</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[zZ]</PRE>
+<P class=MsoNormal>An additional class recognizes white space: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>W<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN><SPAN class=GramE>[ \</SPAN>t]*</PRE>
+<P class=MsoNormal>The first rule changes ``double precision'' to ``real'', or 
+``DOUBLE PRECISION'' to ``REAL''. </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>d</SPAN>}{<SPAN class=GramE>o</SPAN>}{<SPAN class=GramE>u</SPAN>}{<SPAN class=GramE>b</SPAN>}{<SPAN class=GramE>l</SPAN>}{<SPAN class=GramE>e</SPAN>}{W}{<SPAN class=GramE>p</SPAN>}{<SPAN class=GramE>r</SPAN>}{<SPAN class=GramE>e</SPAN>}{<SPAN class=GramE>c</SPAN>}{<SPAN class=GramE>i</SPAN>}{<SPAN class=GramE>s</SPAN>}{<SPAN class=GramE>i</SPAN>}{<SPAN class=GramE>o</SPAN>}{<SPAN class=GramE>n</SPAN>} {</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>yytext[0]=='d'? "real<SPAN class=GramE>" :</SPAN> "REAL");</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>}</PRE>
+<P class=MsoNormal>Care is taken throughout this program to preserve the case 
+(upper or lower) of the original program. The conditional operator is used to 
+select the proper form of the keyword. The next rule copies continuation card 
+indications to avoid confusing them with constants: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>^"<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>"[^ 0]<SPAN style="mso-spacerun: yes">&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;</SPAN>ECHO;</PRE>
+<P class=MsoNormal>In the regular expression, the quotes surround the blanks. It 
+is interpreted as ``beginning of line, then five blanks, then anything but blank 
+or zero.'' Note the two different meanings of ^. There follow some rules to 
+change double precision constants to ordinary floating constants. </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[0-9]<SPAN class=GramE>+{</SPAN>W}{d}{W}[+-]?{W}[0-9]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[0-9]<SPAN class=GramE>+{</SPAN>W}"."{W}{<SPAN class=GramE>d</SPAN>}{W}[+-]<SPAN class=GramE>?{</SPAN>W}[0-9]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>"."{W}[0-9]<SPAN class=GramE>+{</SPAN>W}{d}{W}[+-]?{W}[0-9]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>/* convert constants */</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>for(</SPAN>p=yytext; *p != 0; p++)</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>if</SPAN> (*p == 'd' || *p == 'D')</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>*p=+ 'e'<SPAN class=GramE>- 'd'</SPAN>;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>ECHO;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>}</PRE>
+<P class=MsoNormal>After the floating point constant is recognized, it is 
+scanned by <SPAN class=GramE>the for</SPAN> loop to find the letter d or D. The 
+program than <SPAN class=GramE>adds</SPAN> 'e'-'d', which converts it to the 
+next letter of the alphabet. The modified constant, now single-precision, is 
+written out again. There follow a series of names which must be respelled to 
+remove their initial d. By using the array yytext the same action suffices for 
+all the names (only a sample of a rather long list is given here). </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>d</SPAN>}{<SPAN class=GramE>s</SPAN>}{<SPAN class=GramE>i</SPAN>}{<SPAN class=GramE>n</SPAN>}<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>{<SPAN class=GramE>d</SPAN>}{<SPAN class=GramE>c</SPAN>}{<SPAN class=GramE>o</SPAN>}{<SPAN class=GramE>s</SPAN>}<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>d</SPAN>}{<SPAN class=GramE>s</SPAN>}{<SPAN class=GramE>q</SPAN>}{<SPAN class=GramE>r</SPAN>}{<SPAN class=GramE>t</SPAN>}<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>d</SPAN>}{<SPAN class=GramE>a</SPAN>}{<SPAN class=GramE>t</SPAN>}{<SPAN class=GramE>a</SPAN>}{<SPAN class=GramE>n</SPAN>}<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>...</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>d</SPAN>}{<SPAN class=GramE>f</SPAN>}{<SPAN class=GramE>l</SPAN>}{<SPAN class=GramE>o</SPAN>}{<SPAN class=GramE>a</SPAN>}{<SPAN class=GramE>t</SPAN>}<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>printf("%s",yytext+1);</PRE>
+<P class=MsoNormal>Another list of names must have initial d changed to initial 
+a: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>d</SPAN>}{<SPAN class=GramE>l</SPAN>}{<SPAN class=GramE>o</SPAN>}{<SPAN class=GramE>g</SPAN>}<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>d</SPAN>}{<SPAN class=GramE>l</SPAN>}{<SPAN class=GramE>o</SPAN>}{<SPAN class=GramE>g}</SPAN>10<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>d</SPAN>}{<SPAN class=GramE>m</SPAN>}{<SPAN class=GramE>i</SPAN>}{<SPAN class=GramE>n}</SPAN>1<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>d</SPAN>}{<SPAN class=GramE>m</SPAN>}{<SPAN class=GramE>a</SPAN>}{<SPAN class=GramE>x}</SPAN>1<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>yytext[</SPAN>0] =+ 'a' - 'd';</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>ECHO;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>}</PRE>
+<P class=MsoNormal>And one routine must have initial d changed to initial r: 
+</P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>d}</SPAN>1{m}{a}{c}{h}<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>{yytext[0] =+ 'r'<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>- 'd';</PRE>
+<P class=MsoNormal>To avoid such names as dsinx being detected as instances of 
+dsin, some final rules pick up longer words as identifiers and copy some 
+surviving characters: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[A-Za-z][A-Za-z0-9]*<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[0-9]+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>\n<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>|</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>ECHO;</PRE>
+<P class=MsoNormal>Note that this program is not complete; it does not deal with 
+the spacing problems in <SPAN class=GramE>Fortran</SPAN> or with the use of 
+keywords as identifiers. </P>
+<H2>10. Left Context Sensitivity. </H2>
+<P class=MsoNormal>Sometimes it is desirable to have several sets of lexical 
+rules to be applied at different times in the input. For example, a compiler 
+preprocessor might distinguish preprocessor statements and analyze them 
+differently from ordinary statements. This requires sensitivity to prior 
+context, and there are several ways of handling such problems. The ^ operator, 
+for example, is a prior context operator, recognizing immediately preceding left 
+context just as $ recognizes immediately following right context. Adjacent left 
+context could be extended, to produce a facility similar to that for adjacent 
+right context, but it is unlikely to be as useful, since often the relevant left 
+context appeared some time earlier, such as at the beginning of a line. </P>
+<P>This section describes three means of dealing with different environments: a 
+simple use of flags, when only a few rules change from one environment to 
+another, the use of start conditions on rules, and the possibility of making 
+multiple lexical analyzers all run together. In each case, there are rules which 
+recognize the need to change the environment in which the following input text 
+is <SPAN class=GramE>analyzed,</SPAN> and set some parameter to reflect the 
+change. This may be a flag explicitly tested by the user's action code; such a 
+flag is the simplest way of dealing with the problem, since Lex is not involved 
+at all. It may be more convenient, however, to have Lex remember the flags as 
+initial conditions on the rules. Any rule may be associated with a start 
+condition. It will only be recognized when Lex is in that start condition. The 
+current start condition may be changed at any time. Finally, if the sets of 
+rules for the different environments are very dissimilar, clarity may be best 
+achieved by writing several distinct lexical analyzers, and switching from one 
+to another as desired. </P>
+<P>Consider the following problem: copy the input to the output, changing the 
+word magic to first on every line which began with the letter a, changing magic 
+to second on every line which began with the letter b, and changing magic to 
+third on every line which began with the letter c. All other words and all other 
+lines are left unchanged. </P>
+<P>These rules are so simple that the easiest way to do this job is with a flag: 
+</P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>int</SPAN> flag;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>^a<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{flag = 'a'; <SPAN class=GramE>ECHO;</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>^b<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{flag = 'b'; <SPAN class=GramE>ECHO;</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>^c<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{flag = 'c'; <SPAN class=GramE>ECHO;</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>\n<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{flag <SPAN class=GramE>=<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>0</SPAN> ; ECHO;}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>magic</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>switch</SPAN> (flag)</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>case</SPAN> 'a': printf("first"); break;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class=GramE>case</SPAN> 'b': printf("second"); break;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>case</SPAN> 'c': printf("third"); break;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>default</SPAN>: ECHO; break;</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>}</PRE>
+<P class=MsoNormal><SPAN class=GramE>should</SPAN> be adequate. </P>
+<P>To handle the same problem with start conditions, each start condition must 
+be introduced to Lex in the definitions section with a line reading </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%Start<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>name1 <SPAN class=GramE>name2 ...</SPAN></PRE>
+<P class=MsoNormal><SPAN class=GramE>where</SPAN> the conditions may be named in 
+any order. The word Start may be abbreviated to s or S. The conditions may be 
+referenced at the head of a rule with the &lt;&gt; brackets: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>&lt;name1&gt;expression</PRE>
+<P class=MsoNormal><SPAN class=GramE>is</SPAN> a rule which is only recognized 
+when Lex is in the start condition name1. To enter a start condition, execute 
+the action statement </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>BEGIN name1;</PRE>
+<P class=MsoNormal><SPAN class=GramE>which</SPAN> changes the start condition to 
+name1. To resume the normal state, </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>BEGIN 0;</PRE>
+<P class=MsoNormal><SPAN class=GramE>resets</SPAN> the initial condition of the 
+Lex automaton interpreter. A rule may be active in several start conditions: 
+&lt;name1<SPAN class=GramE>,name2,name3</SPAN>&gt; is a legal prefix. Any rule 
+not beginning with the &lt;&gt; prefix operator is always active. </P>
+<P>The same example as before can be written: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%START AA BB CC</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>^a<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{ECHO; BEGIN <SPAN class=GramE>AA;</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>^b<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{ECHO; BEGIN <SPAN class=GramE>BB;</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>^c<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{ECHO; BEGIN <SPAN class=GramE>CC;</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>\n<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{ECHO; BEGIN <SPAN class=GramE>0;</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>&lt;AA&gt;magic<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"first");</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>&lt;BB&gt;magic<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"second");</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>&lt;CC&gt;magic<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>printf(</SPAN>"third");</PRE>
+<P class=MsoNormal><SPAN class=GramE>where</SPAN> the logic is exactly the same 
+as in the previous method of handling the problem, but Lex does the work rather 
+than the user's code. </P>
+<H2>11. Character Set. </H2>
+<P class=MsoNormal>The programs generated by Lex handle character I/O only 
+through the routines input, output, and unput. Thus the character representation 
+provided in these routines is accepted by Lex and employed to return values in 
+yytext. For internal use a character is represented as a small integer which, if 
+the standard library is used, has a value equal to the integer value of the bit 
+pattern representing the character on the host computer. Normally, the letter 
+<SPAN class=GramE>a is</SPAN> represented as the same form as the character 
+constant 'a'. If this interpretation is changed, by providing I/O routines which 
+translate the characters, Lex must be told about it, by giving a translation 
+table. This table must be in the definitions section, and must be bracketed by 
+lines containing only ``%T''. The table contains lines of the form </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>integer</SPAN>} {<SPAN class=GramE>character</SPAN> string}</PRE>
+<P class=MsoNormal><SPAN class=GramE>which</SPAN> indicate the value associated 
+with each character. Thus the next example </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%T</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>1<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>Aa</SPAN></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>2<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>Bb</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>...</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>26<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>Zz</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>27<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>\n</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>28<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>+</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>29<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>-</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>30<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>0</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>31<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>1</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>...</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>39<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>9</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>%T</PRE><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>Sample character table.</SPAN></PRE>
+<P class=MsoNormal>maps the lower and upper case letters together into the 
+integers 1 through 26, newline into 27, + and - into 28 and 29, and the digits 
+into 30 through 39. Note the escape for newline. If a table is supplied, every 
+character that is to appear either in the rules or in any valid input must be 
+included in the table. No character may be assigned the number 0, and no 
+character may be assigned a bigger number than the size of the hardware 
+character set. </P>
+<H2>12. Summary of Source Format. </H2>
+<P class=MsoNormal>The general form of a Lex source file is: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>definitions</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>rules</SPAN>}</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%%</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>{<SPAN class=GramE>user</SPAN> subroutines}</PRE>
+<P class=MsoNormal>The definitions section contains a combination of </P>
+<P>1) Definitions, in the form ``name space translation''. </P>
+<P>2) Included code, in the form ``space code''. </P>
+<P>3) Included code, in the form </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%{</PRE><PRE> <SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class=GramE>code</SPAN></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%}</PRE>
+<P class=MsoNormal>4) Start conditions, given in the form </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%S name1 <SPAN class=GramE>name2 ...</SPAN></PRE>
+<P class=MsoNormal>5) Character set tables, in the form </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%T</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN><SPAN class=GramE>number</SPAN> space character-string</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>...</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%T</PRE>
+<P class=MsoNormal>6) Changes to internal array sizes, in the form </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>%<SPAN class=GramE>x<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>nnn</SPAN></PRE>
+<P class=MsoNormal><SPAN class=GramE>where</SPAN> nnn is a decimal integer 
+representing an array size and x selects the parameter as follows: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>Letter<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>Parameter</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>p</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>positions</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>n</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>states</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>e</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>tree nodes</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>a</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>transitions</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>k</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>packed character classes</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>o</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>output array size</PRE>
+<P class=MsoNormal>Lines in the rules section have the form ``expression 
+action'' where the action may be continued on succeeding lines by using braces 
+to delimit it. </P>
+<P>Regular expressions in Lex use the following operators: </P><PRE><o:p>&nbsp;</o:p></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>x</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>the character "x"</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>"<SPAN class=GramE>x</SPAN>"<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>an "x", even if x is an operator.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>\x<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>an "x", even if x is an operator.</SPAN></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>[<SPAN class=GramE>xy</SPAN>]<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>the character x or y.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>[x-z]<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </SPAN>the characters x, y or z.</SPAN></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>[^x]<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>any character but x.</SPAN></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>any</SPAN> character but newline.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>^x<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>an x at the beginning of a line.</SPAN></PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>&lt;y&gt;x<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>an x when Lex is in start condition y.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>x</SPAN>$<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>an x at the end of a line.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>x</SPAN>?<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>an</SPAN> optional x.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>x</SPAN>*<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>0,1,2, ... instances of x.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>x+<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>1<SPAN class=GramE>,2,3</SPAN>, ... instances of x.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>x|y</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>an x or a y.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>(x)<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>an</SPAN> x.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>x/y</SPAN><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>an x but only if followed by y.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>{<SPAN class=GramE>xx</SPAN>}<SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp; </SPAN>the translation of xx from the</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>definitions</SPAN> section.</PRE><PRE><SPAN style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </SPAN><SPAN class=GramE>x{</SPAN>m,n}<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>m through n occurrences of x</PRE>
+<H2>13. Caveats and Bugs. </H2>
+<P class=MsoNormal>There are pathological expressions which produce exponential 
+growth of the tables when converted to deterministic machines; fortunately, they 
+are rare. </P>
+<P>REJECT does not rescan the input; instead it remembers the results of the 
+previous scan. This means that if a rule with trailing context is found, and 
+REJECT executed, the user must not have used unput to change the characters 
+forthcoming from the input stream. This is the only restriction on the user's 
+ability to manipulate the not-yet-processed input. </P>
+<H2>14. Acknowledgments. </H2>
+<P class=MsoNormal>As should be obvious from the above, the outside of Lex is 
+patterned on Yacc and the inside on Aho's string matching routines. Therefore, 
+both S. C. Johnson and A. V. Aho are really originators of much of Lex, as well 
+as debuggers of it. Many thanks are due to both. </P>
+<P>The code of the current version of Lex was designed, written, and debugged by 
+Eric Schmidt. </P>
+<H2>15. References. </H2>
+<P>1. B. W. Kernighan and D. M. Ritchie, <SPAN class=GramE>The</SPAN> C 
+Programming Language, Prentice-Hall, N. J. (1978). </P>
+<P>2. B. W. Kernighan, Ratfor: A Preprocessor for a Rational <SPAN 
+class=GramE>Fortran</SPAN>, Software Practice and Experience, 5, pp. 395-496 
+(1975). </P>
+<P>3. S. C. Johnson, Yacc: Yet <SPAN class=GramE>Another</SPAN> Compiler 
+Compiler, Computing Science Technical Report No. 32, 1975, 
+<st1:City><st1:place>Bell</st1:place></st1:City> Laboratories, 
+<st1:place><st1:City>Murray Hill</st1:City>, <st1:State>NJ</st1:State> 
+<st1:PostalCode>07974</st1:PostalCode></st1:place>. </P>
+<P>4. A. V. Aho and M. J. Corasick, Efficient String Matching: An Aid to 
+Bibliographic Search, Comm. ACM 18, 333-340 (1975). </P>
+<P>5. B. W. Kernighan, D. M. Ritchie and K. L. Thompson, QED Text Editor, 
+Computing Science Technical Report No. 5, 1972, 
+<st1:City><st1:place>Bell</st1:place></st1:City> Laboratories, 
+<st1:place><st1:City>Murray Hill</st1:City>, <st1:State>NJ</st1:State> 
+<st1:PostalCode>07974</st1:PostalCode></st1:place>. </P>
+<P>6. D. M. Ritchie, private communication. See also M. E. Lesk, The Portable C 
+Library, Computing Science Technical Report No. 31, Bell Laboratories, 
+<st1:place><st1:City><SPAN class=GramE>Murray</SPAN> Hill</st1:City>, 
+<st1:State>NJ</st1:State> <st1:PostalCode>07974</st1:PostalCode></st1:place>. 
+</P></DIV><!-- Mirrored from dinosaur.compilertools.net/lex/index.html by HTTrack Website Copier/3.x [XR&CO'2004], Thu, 29 Apr 2004 07:25:33 GMT --></BODY></HTML>

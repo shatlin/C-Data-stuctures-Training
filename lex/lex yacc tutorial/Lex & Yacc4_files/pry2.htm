@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0043)http://epaperpress.com/lexandyacc/pry2.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="pry2_files/format.css" type=text/css rel=stylesheet><LINK 
+href="pry2_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="pry2_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Yacc Practice, Part II</H1>
+<P>In this section we will extend the calculator from the previous section to 
+incorporate some new functionality. New features include arithmetic operators 
+multiply, and divide. Parentheses may be used to over-ride operator precedence, 
+and single-character variables may be specified in assignment statements. The 
+following illustrates sample input and calculator output:</P><PRE class=icode>user:  3 * (4 + 5)
+calc:  27
+user:  x = 3 * (4 + 5)
+user:  y = 5
+user:  x
+calc:  27
+user:  y
+calc:  5
+user:  x + 2*y
+calc:  37
+</PRE>
+<P>The lexical analyzer returns <CODE>VARIABLE</CODE> and <CODE>INTEGER</CODE> 
+tokens. For variables, <CODE>yylval</CODE> specifies an index to 
+<CODE>sym</CODE>, our symbol table. For this program, <CODE>sym</CODE> merely 
+holds the value of the associated variable. When <CODE>INTEGER</CODE> tokens are 
+returned, <CODE>yylval</CODE> contains the number scanned. Here is the input 
+specification for lex:</P><PRE class=icode>%{
+    #include &lt;stdlib.h&gt;
+    #include "y.tab.h"
+    void yyerror(char *);
+%}
+
+%%
+
+    /* variables */
+[a-z]       {
+                yylval = *yytext - 'a';
+                return VARIABLE;
+            }
+
+    /* integers */
+[0-9]+      {
+                yylval = atoi(yytext);
+                return INTEGER;
+            }
+
+    /* operators */
+[-+()=/*\n] { return *yytext; }
+
+    /* skip whitespace */
+[ \t]        ;
+
+    /* anything else is an error */
+.               yyerror("invalid character");
+
+%%
+
+int yywrap(void) {
+    return 1;
+}
+</PRE>
+<P>The input specification for yacc follows. The tokens for <CODE>INTEGER</CODE> 
+and <CODE>VARIABLE</CODE> are utilized by yacc to create <CODE>#defines</CODE> 
+in <CODE>y.tab.h</CODE> for use in lex. This is followed by definitions for the 
+arithmetic operators. We may specify <CODE>%left</CODE>, for left-associative, 
+or <CODE>%right</CODE>, for right associative. The last definition listed has 
+the highest precedence. Thus, multiplication and division have higher precedence 
+than addition and subtraction. All four operators are left-associative. Using 
+this simple technique, we are able to disambiguate our grammar.</P><PRE class=icode>%token INTEGER VARIABLE
+%left '+' '-'
+%left '*' '/'
+
+%{
+    void yyerror(char *);
+    int yylex(void);
+    int sym[26];
+%}
+
+%%
+
+program:
+        program statement '\n'
+        | 
+        ;
+
+statement:
+        expr                      { printf("%d\n", $1); }
+        | VARIABLE '=' expr       { sym[$1] = $3; }
+        ;
+
+expr:
+        INTEGER
+        | VARIABLE                { $$ = sym[$1]; }
+        | expr '+' expr           { $$ = $1 + $3; }
+        | expr '-' expr           { $$ = $1 - $3; }
+        | expr '*' expr           { $$ = $1 * $3; }
+        | expr '/' expr           { $$ = $1 / $3; }
+        | '(' expr ')'            { $$ = $2; }
+        ;
+
+%%
+
+void yyerror(char *s) {
+    fprintf(stderr, "%s\n", s);
+}
+
+int main(void) {
+    yyparse();
+    return 0;
+}
+</PRE></BODY></HTML>

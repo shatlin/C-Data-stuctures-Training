@@ -1,0 +1,136 @@
+%token S_COM
+%token S_Q
+%token S_COL
+...
+%token T_INTGR
+%token T_NUMBER
+
+%start orcfile
+%left S_AND S_OR
+%nonassoc S_LT S_GT S_LEQ S_GEQ S_EQ S_NEQ
+%left S_PLUS S_MINUS
+%left S_STAR S_SLASH
+%right S_UNOT
+%right S_UMINUS
+%token T_HIGHEST
+
+%{
+#define YYSTYPE TREE*
+#include "jsnd.h"
+%}
+%%
+
+orcfile           : header instrlist	{ }
+                  ;
+
+header            : header rtparam      { }
+                  | S_NL		{ }
+                  | /* null */
+		  | error               { printf("Ill formed header\n"); }
+                  ;
+
+instrlist         : instrlist instrdecl { }
+		  | instrdecl           { }
+		  | error		{ printf("Ill formed instrument\n");}
+		  ;
+
+instrdecl	  : T_INSTR T_INTGR S_NL statementlist T_ENDIN S_NL
+                        { start_instr(((TOKEN*)$2)->value);
+                          statement_list = $4;
+                          end_instr(); }
+                  | S_NL {}
+		  | T_INSTR error
+                        { printf("No number following instr\n"); }
+		  ;
+
+rtparam		  : T_SRATE S_ASSIGN T_NUMBER S_NL
+                        { sr = ((TOKEN*)$3)->fvalue;
+                          printf("sr set to %f\n", sr); }
+                  | T_SRATE S_ASSIGN T_INTGR S_NL
+                        { sr = (double)((TOKEN*)$3)->value;
+                          printf("sr set to %f\n", sr); }
+		  | T_KRATE S_ASSIGN T_NUMBER S_NL
+                        { kr = ((TOKEN*)$3)->fvalue;
+                          printf("kr set to %f\n", kr); }
+		  | T_KRATE S_ASSIGN T_INTGR S_NL
+                        { kr = (double)((TOKEN*)$3)->value;
+                          printf("kr set to %f\n", kr); }
+		  | T_KSMPS S_ASSIGN T_INTGR S_NL
+                        { ksmps = ((TOKEN*)$3)->value;
+                          printf("ksmps set to %d\n", ksmps);}
+		  | T_NCHNLS S_ASSIGN T_INTGR S_NL
+                        { nchnls = ((TOKEN*)$3)->value;
+                          printf("nchnlc set to %d\n", nchnls); }
+                  | gans initop exprlist S_NL
+                                { instr0($2, $1, 
+                                         check_opcode($2, $1, $3)); }
+		  |    initop0 exprlist S_NL
+                                { instr0($1, NULL,
+                                         check_opcode0($1, $2)); }
+                  | S_NL                { }
+                  ;
+
+initop0           : T_STRSET		{ $$ = make_leaf(T_STRSET, NULL); }
+                  | T_PSET		{ $$ = make_leaf(T_PSET, NULL); }
+...
+                  | T_ZAKINIT		{ $$ = make_leaf(T_ZAKINIT, NULL); }
+                  ;
+
+...
+gident		  : T_IDENT_GI          { $$ = make_leaf(T_IDENT_GI, yylval); }
+		  | T_IDENT_GA          { $$ = make_leaf(T_IDENT_GA, yylval); }
+                  ;
+
+statementlist     : statementlist statement S_NL
+                        { if ($2 == NULL) $$ = $1;
+                          else            $$ = make_node(S_ANDTHEN, $1, $2); }
+                  | /* null */          { $$ = NULL; }
+                  ;
+
+goto		  : T_GOTO              { $$ = make_leaf(T_GOTO, NULL); }
+                  | T_IGOTO             { $$ = make_leaf(T_IGOTO, NULL); }
+                  ;
+
+statement	  : lvalue S_ASSIGN expr
+                                { $$ = make_node(S_ASSIGN, $1, $3); }
+		  | ans opcode exprlist
+                                { $$ = make_node($2->type, $1,
+                                                 check_opcode($2, $1, $3)); }
+....
+		  ;
+ident		  : T_IDENT_I           { $$ = make_leaf(T_IDENT_I, yylval); }
+		  | T_IDENT_K           { $$ = make_leaf(T_IDENT_K, yylval); }
+                  | gident              { $$ = $1; }
+                  ;
+
+ans               : ident               { $$ = $1; }
+                  | ans S_COM ident     { $$ = make_node(S_COM, $1, $3); }
+                  ;
+
+iexp              : iexp S_PLUS iterm   { $$ = make_node(S_PLUS, $1, $3); }
+		  | iexp S_MINUS iterm  { $$ = make_node(S_MINUS, $1, $3); }
+                  | iterm               { $$ = $1; }
+                  ;
+iterm             : iterm S_TIMES ifac   { $$ = make_node(S_TIMES, $1, $3); }
+		  | iterm S_DIV ifac     { $$ = make_node(S_DIV, $1, $3); }
+                  | ifac                { $$ = $1; }
+                  ;
+ifac              : ident               { $$ = $1; }
+                  | const               { $$ = $1; }
+		  | S_MINUS ifac %prec S_UMINUS
+                                        { $$ = make_node(S_UMINUS, $2, NULL); }
+                  | S_LB expr S_RB      { $$ = $2; }
+		  | function S_LB exprlist S_RB
+                                        { $$ = make_node(S_APPLY, $1, $3); }
+                  ;
+exprlist          : exprlist S_COM expr { $$ = make_node(S_COM, $1, $3); }
+		  | expr                { $$ = $1; }
+		  | /* null */          { $$ = NULL; }
+		  ;
+
+opcode0           : T_IDENT             { $$ = make_leaf(yylval->type, NULL); }
+		  ;
+
+opcode            : T_IDENT		{ $$ = make_leaf(yylval->type, NULL); }
+                  ;
+%%

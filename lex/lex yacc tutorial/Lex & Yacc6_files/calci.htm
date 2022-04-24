@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0044)http://epaperpress.com/lexandyacc/calci.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="calci_files/format.css" type=text/css rel=stylesheet><LINK 
+href="calci_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="calci_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Include File</H1><PRE class=code>typedef enum { typeCon, typeId, typeOpr } nodeEnum;
+
+/* constants */
+typedef struct {
+    int value;                  /* value of constant */
+} conNodeType;
+
+/* identifiers */
+typedef struct {
+    int i;                      /* subscript to ident array */
+} idNodeType;
+
+/* operators */
+typedef struct {
+    int oper;                   /* operator */
+    int nops;                   /* number of operands */
+    struct nodeTypeTag *op[1];  /* operands (expandable) */
+} oprNodeType;
+
+typedef struct nodeTypeTag {
+    nodeEnum type;              /* type of node */
+
+    /* union must be last entry in nodeType */
+    /* because operNodeType may dynamically increase */
+    union {
+	conNodeType con;        /* constants */
+	idNodeType id;          /* identifiers */
+	oprNodeType opr;        /* operators */
+    };
+} nodeType;
+
+extern int sym[26];
+
+</PRE></BODY></HTML>

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0043)http://epaperpress.com/lexandyacc/attr.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="attr_files/format.css" type=text/css rel=stylesheet><LINK 
+href="attr_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="attr_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Inherited Attributes</H1>
+<P>The examples so far have used <I>synthesized</I> attributes. At any point in 
+a syntax tree we can determine the attributes of a node based on the attributes 
+of its children. Consider the rule</P><PRE class=icode>expr: expr '+' expr           { $$ = $1 + $3; }
+</PRE>
+<P>Since we are parsing bottom-up, the values of both operands are available, 
+and we can determine the value associated with the left-hand side. An 
+<I>inherited</I> attribute of a node depends on the value of a parent or sibling 
+node. The following grammar defines a C variable declaration: </P><PRE class=icode>decl: type varlist
+type: INT | FLOAT
+varlist: 
+        VAR                   { setType($1, $0); }
+        | varlist ',' VAR     { setType($3, $0); }
+</PRE>
+<P>Here is a sample parse:</P><PRE class=icode>. INT VAR
+INT . VAR
+type . VAR
+type VAR .
+type varlist .
+decl .
+</PRE>
+<P>When we reduce <CODE>VAR</CODE> to <CODE>varlist</CODE>, we should annotate 
+the symbol table with the type of the variable. However, the type is buried in 
+the stack. This problem is resolved by indexing back into the stack. Recall that 
+<CODE>$1</CODE> designates the first term on the right-hand side. We can index 
+backwards, using <CODE>$0</CODE>, <CODE>$-1</CODE>, and so on. In this case, 
+<CODE>$0</CODE> will do just fine. If you need to specify a token type, the 
+syntax is <CODE>$&lt;tokentype&gt;0</CODE>, angle brackets included. In this 
+particular example, care must be taken to ensure that <CODE>type</CODE> 
+<I>always</I> precedes <CODE>varlist</CODE>. </P></BODY></HTML>

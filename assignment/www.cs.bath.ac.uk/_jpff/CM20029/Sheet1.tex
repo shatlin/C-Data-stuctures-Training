@@ -1,0 +1,54 @@
+\documentstyle[fullpage,11pt]{article}
+\begin{document}
+\title{ \large \bf MATH20029: Example Sheet 1}
+\author{John ff}
+%%\date{}
+\maketitle
+\setlength{\parskip}{0.2in}
+
+\vskip -1in
+
+\begin{enumerate}
+\item  Using LEX and possibly associated C, write a lexical analyser
+  for the following subset of a C-like language:
+  \begin{itemize}
+    \item Comments starting with a {\tt //} and lasting to the end of the
+      line, 
+    \item Variables made from upper, lower-case letters and digits only,
+      but starting with a letter
+    \item Integers in decimal notation with an optional leading sign
+    \item Strings, enclosed in {\tt "} characters, but no escaped
+      characters ({\em i.e.}~no {\tt $\backslash$n})
+    \item The keywords {\tt if else while int void return}
+    \item The operators and punctuation {\tt ( ) , ; = * / || \&\& }
+  \end{itemize}
+  Ensure that when your lexer has recognised a token it prints the
+  lexeme.
+
+  \item Write a function that takes a string and returns a positive
+  integer that can be used as a hash code.  Test it on some text files
+  to show what the distribution of hash values is; do the same mod
+  1024
+
+  \item Write a hash table that can hold unique copies of strings, and
+    provides the two functions
+    \begin{itemize}
+    \item void add\_string(char *);
+    \item char *lookup(char *);
+    \end{itemize}
+    The second function should return the string stored in the hash
+    system or NULL if it is not present.
+
+    \item Modify your LEX program to add the variables to the hash
+    table you have written
+
+    \item Modify your symbol table to use a token structure rather
+    than strings.
+
+    \item Modify your LEX program to create a token-type structure
+    rather than just a recognition.
+
+\end{enumerate}
+
+
+\end{document}

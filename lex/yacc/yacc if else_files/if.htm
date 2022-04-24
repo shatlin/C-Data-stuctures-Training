@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0041)http://epaperpress.com/lexandyacc/if.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="if_files/format.css" type=text/css rel=stylesheet><LINK 
+href="if_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="if_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>If-Else Ambiguity</H1>
+<P>A shift-reduce conflict that frequently occurs involves the <I>if-else</I> 
+construct. Assume we have the following rules:</P><PRE class=icode>stmt:
+   IF expr stmt
+   | IF expr stmt ELSE stmt
+   ...
+</PRE>
+<P>and the following state:</P><PRE class=icode>IF expr stmt IF expr stmt . ELSE stmt
+</PRE>
+<P>We need to decide if we should shift the <CODE>ELSE</CODE>, or reduce the 
+<CODE>IF expr stmt</CODE> at the top of the stack. If we shift, then we have 
+<P><PRE class=icode>IF expr stmt IF expr stmt . ELSE stmt
+IF expr stmt IF expr stmt ELSE . stmt
+IF expr stmt IF expr stmt ELSE stmt .
+IF expr stmt stmt .
+</PRE>
+<P>where the second <CODE>ELSE</CODE> is paired with the second <CODE>IF</CODE>. 
+If we reduce, we have</P><PRE class=icode>IF expr stmt IF expr stmt . ELSE stmt
+IF expr stmt stmt . ELSE stmt
+IF expr stmt . ELSE stmt
+IF expr stmt ELSE . stmt
+IF expr stmt ELSE stmt .
+</PRE>
+<P>where the second <CODE>ELSE</CODE> is paired with the first <CODE>IF</CODE>. 
+Modern programming languages pair an <CODE>ELSE</CODE> with the most recent 
+unpaired <CODE>IF</CODE>, so the former behavior is expected. This works well 
+with yacc, since default behavior, when a shift-reduce conflict is encountered, 
+is to shift. 
+<P>Although yacc does the right thing, it also issues a shift-reduce warning 
+message. To remove the message, give <CODE>IF-ELSE</CODE> a higher precedence 
+than the simple <CODE>IF</CODE> statement:</P><PRE class=icode>%nonassoc IFX
+%nonassoc ELSE
+
+   stmt: 
+       IF expr stmt %prec IFX
+       | IF expr stmt ELSE stmt
+</PRE></BODY></HTML>

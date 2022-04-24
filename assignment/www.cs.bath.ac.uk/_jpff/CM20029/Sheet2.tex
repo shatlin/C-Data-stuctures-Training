@@ -1,0 +1,100 @@
+\documentstyle[fullpage,11pt]{article}
+\begin{document}
+\title{ \large \bf MATH20029: Example Sheet 2}
+\author{John ff}
+%%\date{}
+\maketitle
+\setlength{\parskip}{0.2in}
+
+\vskip -1in
+
+\begin{enumerate}
+
+\item
+
+Using YACC, Bison or CUPS, create a parser which makes and outputs a parse
+tree for the language defined by the following grammar.
+
+\begin{tabular}{lcl}
+goal & $\Rightarrow$ & statementlist \\
+statementlist & $\Rightarrow$ & statement {\bf ;} $|$ statement {\bf ;} statementlist \\
+statement & $\Rightarrow$ & variable {\bf =} expression $|$ {\bf D} varlist $|$ {\bf U} varlist \\
+varlist & $\Rightarrow$ & variable $|$ varlist {\bf ,} variable \\
+expression & $\Rightarrow$ & expression {\bf +} term $|$ term \\
+term & $\Rightarrow$ & term {\bf *} factor $|$ factor \\
+factor & $\Rightarrow$ & variable $|$  number $|$ {\bf (} expression {\bf )} \\
+variable & $\Rightarrow$ & [{\bf a}-{\bf z}] \\
+number & $\Rightarrow$ & digit $|$ digit number \\
+digit & $\Rightarrow$ & [{\bf 0}-{\bf 9}]
+\end{tabular}
+
+\noindent {\bf Note:} You should not need a lexical phase as all
+keywords are single characters.  Treat integers syntactically.
+
+\item Take the grammar 
+
+\begin{tabular}{lcl}
+goal & $\Rightarrow$ & expression {\bf ;} \\
+goal & $\Rightarrow$ & ifstatement {\bf ;} \\
+expression & $\Rightarrow$ & term {\bf +} term \\
+expression & $\Rightarrow$ & term {\bf --} term \\
+expression & $\Rightarrow$ & term \\
+expression & $\Rightarrow$ & variable {\bf =} expression \\
+term & $\Rightarrow$ & factor {\bf *} factor \\
+term & $\Rightarrow$ & factor {\bf /} factor \\
+term & $\Rightarrow$ & factor \\
+factor & $\Rightarrow$ & variable \\
+factor & $\Rightarrow$ & integer \\
+factor & $\Rightarrow$ & string \\
+factor & $\Rightarrow$ & {\bf (} expression {\bf )} \\
+ifstatement & $\Rightarrow$ & {\bf if (} expression  {\bf )} goal {\bf else} goal\\
+ifstatement & $\Rightarrow$ & {\bf if (} expression  {\bf )} goal
+\end{tabular}
+
+ and add a simple code generator to M68000 assembler.  You can assume
+ that variable allocation is provided elsewhere.
+
+Note: this is very nearly the same grammar as the draft first
+assignment so you should not need to do much re-writing of the lexer/parser.
+
+\item For the previous exercise, by scanning the symbol table generate
+  assembler to allocate the variables and strings.
+
+\item Write a code generator for the grammar
+
+\begin{tabular}{lcl}
+goal & $\Rightarrow$ & statementlist \\
+statementlist & $\Rightarrow$ & statement {\bf ;} $|$ statement {\bf ;} statementlist \\
+statement & $\Rightarrow$ & variable {\bf =} expression $|$ {\bf D} varlist $|$ {\bf U} varlist \\
+varlist & $\Rightarrow$ & variable $|$ varlist {\bf ,} variable \\
+expression & $\Rightarrow$ & expression {\bf +} term $|$ term \\
+term & $\Rightarrow$ & term {\bf *} factor $|$ factor \\
+factor & $\Rightarrow$ & variable $|$  number $|$ {\bf (} expression {\bf )} \\
+variable & $\Rightarrow$ & [{\bf a}-{\bf z}] \\
+number & $\Rightarrow$ & digit $|$ digit number \\
+digit & $\Rightarrow$ & [{\bf 0}-{\bf 9}]
+\end{tabular}
+
+You should use the YACC parser of the first exercise on this sheet.
+Ignore the {\bf D} and {\bf U} statements.
+
+\item
+ The {\bf D} and {\bf U} declare and undeclare variables.  Add
+ semantic operations to your parser/codegenerator to police this.
+
+\item Comment critically on the code you produce.
+
+\item For one (or all) of the parsers generate TAC rather than assembler.
+
+\item Extend the YACC grammar above so the declarations are of either
+  integer or floating type, using D/U for integers and N/R for floats.
+  Then change the semantic process to check that the types of all the
+  operators are the same, and the assignment is of the right type.  At
+  the same time annotate the operations as to their type.
+
+\item As previous exercise, but add type coercions as needed.
+
+\end{enumerate}
+
+
+\end{document}

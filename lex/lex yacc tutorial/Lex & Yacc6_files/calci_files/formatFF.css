@@ -1,0 +1,15 @@
+BODY {
+	COLOR: #000000; BACKGROUND-COLOR: #ffffff
+}
+A:link {
+	COLOR: #0000cc
+}
+A:visited {
+	COLOR: #0000cc
+}
+A:active {
+	COLOR: #cc0000
+}
+A:hover {
+	COLOR: #cc0000
+}

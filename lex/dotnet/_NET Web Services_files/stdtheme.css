@@ -1,0 +1,219 @@
+BODY {
+	FONT-SIZE: 70%; MARGIN: 0px; COLOR: #000000; BACKGROUND-COLOR: #f1f1f1
+}
+BODY {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+P {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+H1 {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+H2 {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+H3 {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+TABLE {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+TD {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+TH {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+UL {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+OL {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+TEXTAREA {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+INPUT {
+	FONT-FAMILY: verdana,helvetica,arial,sans-serif
+}
+TABLE {
+	FONT-SIZE: 100%
+}
+INPUT {
+	FONT-SIZE: 100%
+}
+TEXTAREA {
+	FONT-SIZE: 100%
+}
+TABLE.ex {
+	FONT-SIZE: 100%; COLOR: #000000; BACKGROUND-COLOR: #f1f1f1
+}
+TABLE.tip {
+	BORDER-RIGHT: 1px solid; BORDER-TOP: 1px solid; FONT-SIZE: 100%; BORDER-LEFT: 1px solid; COLOR: #000000; BORDER-BOTTOM: 1px solid; BACKGROUND-COLOR: #ffffff
+}
+TABLE.db {
+	FONT-SIZE: 100%; COLOR: #000000; BACKGROUND-COLOR: #ffffff
+}
+TH.db {
+	COLOR: #000000; BACKGROUND-COLOR: #f1f1f1
+}
+DIV {
+	WIDTH: 100%
+}
+H1 {
+	FONT-SIZE: 160%
+}
+H2 {
+	MARGIN-TOP: 10px; FONT-SIZE: 120%; MARGIN-BOTTOM: 10px
+}
+H3 {
+	FONT-SIZE: 110%
+}
+H4 {
+	FONT-SIZE: 100%
+}
+H5 {
+	FONT-SIZE: 90%
+}
+H6 {
+	FONT-SIZE: 80%
+}
+H2.home {
+	MARGIN-TOP: 0px; PADDING-LEFT: 1px; FONT-SIZE: 120%; MARGIN-BOTTOM: 5px; PADDING-BOTTOM: 1px; COLOR: #900b09; PADDING-TOP: 1px; BACKGROUND-COLOR: #ffffff
+}
+H2.tutheader {
+	MARGIN-TOP: 0px; PADDING-LEFT: 4px; FONT-SIZE: 110%; MARGIN-BOTTOM: 5px; PADDING-BOTTOM: 1px; COLOR: #ffffff; PADDING-TOP: 0px; BACKGROUND-COLOR: #808080
+}
+TABLE.right {
+	BORDER-RIGHT: 2px ridge; BORDER-TOP: 2px ridge; MARGIN-BOTTOM: 1px; BORDER-LEFT: 2px ridge; COLOR: #000000; BORDER-BOTTOM: 2px ridge; BACKGROUND-COLOR: #ffffff
+}
+TH.right {
+	PADDING-BOTTOM: 2px; COLOR: #ffffff; BACKGROUND-COLOR: #808080
+}
+TD.right {
+	PADDING-BOTTOM: 6px; COLOR: #000000; PADDING-TOP: 3px; BACKGROUND-COLOR: #ffffff
+}
+TD.content {
+	COLOR: #900b09; BACKGROUND-COLOR: #f1f1f1
+}
+TD.deprecated {
+	COLOR: #ff0000; BACKGROUND-COLOR: transparent
+}
+TD.red {
+	COLOR: #ff0000; BACKGROUND-COLOR: transparent
+}
+P.red {
+	COLOR: #ff0000; BACKGROUND-COLOR: transparent
+}
+P.intro {
+	MARGIN-TOP: 10px; FONT-WEIGHT: bold; FONT-SIZE: 100%; COLOR: #000000; BACKGROUND-COLOR: transparent
+}
+P.introcenter {
+	FONT-SIZE: 110%; COLOR: #8b4513; BACKGROUND-COLOR: transparent; TEXT-ALIGN: center
+}
+PRE {
+	FONT-SIZE: 110%; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 0px; FONT-FAMILY: "Courier New",monospace
+}
+SPAN.blue {
+	COLOR: #00008b; BACKGROUND-COLOR: transparent
+}
+SPAN.red {
+	COLOR: #ff0000; BACKGROUND-COLOR: transparent
+}
+SPAN.ieonly {
+	FONT-SIZE: 80%; COLOR: #000080; BACKGROUND-COLOR: transparent
+}
+SPAN.t {
+	FONT-SIZE: 80%; COLOR: #0033cc; BACKGROUND-COLOR: transparent
+}
+IMG.float {
+	FLOAT: left
+}
+H1 {
+	COLOR: #000000; BACKGROUND-COLOR: transparent
+}
+H2 {
+	COLOR: #000000; BACKGROUND-COLOR: transparent
+}
+H3 {
+	COLOR: #000000; BACKGROUND-COLOR: transparent
+}
+H1.att {
+	COLOR: #000000; BACKGROUND-COLOR: transparent
+}
+H2.att {
+	COLOR: #000000; BACKGROUND-COLOR: transparent
+}
+H3.att {
+	COLOR: #000000; BACKGROUND-COLOR: transparent
+}
+HR.att {
+	COLOR: #000000; BACKGROUND-COLOR: transparent
+}
+HR {
+	COLOR: #000000; HEIGHT: 1px; BACKGROUND-COLOR: transparent
+}
+TABLE.front {
+	COLOR: #000000; BACKGROUND-COLOR: #f1f1f1
+}
+TH.front {
+	COLOR: #ffffff; BACKGROUND-COLOR: #666666
+}
+TD.front {
+	COLOR: #000000; BACKGROUND-COLOR: #f1f1f1
+}
+A.nounderline {
+	TEXT-DECORATION: none
+}
+A:link {
+	COLOR: #900b09; BACKGROUND-COLOR: transparent
+}
+A:visited {
+	COLOR: #900b09; BACKGROUND-COLOR: transparent
+}
+A:active {
+	COLOR: #ff0000; BACKGROUND-COLOR: transparent
+}
+A:hover {
+	COLOR: #ff0000; BACKGROUND-COLOR: transparent
+}
+A.left:link {
+	COLOR: black; BACKGROUND-COLOR: transparent; TEXT-DECORATION: none
+}
+A.left:visited {
+	COLOR: black; BACKGROUND-COLOR: transparent; TEXT-DECORATION: none
+}
+A.left:hover {
+	COLOR: #900b09; BACKGROUND-COLOR: transparent; TEXT-DECORATION: underline
+}
+A.left:active {
+	COLOR: #900b09; BACKGROUND-COLOR: transparent; TEXT-DECORATION: underline
+}
+A.red:link {
+	COLOR: #900b09; BACKGROUND-COLOR: transparent
+}
+A.red:visited {
+	COLOR: #900b09; BACKGROUND-COLOR: transparent
+}
+A.red:active {
+	COLOR: #ff0000; BACKGROUND-COLOR: transparent
+}
+A.red:hover {
+	COLOR: #ff0000; BACKGROUND-COLOR: transparent
+}
+#sp {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 10px; PADDING-TOP: 10px; TEXT-ALIGN: left
+}
+#sp P {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; FLOAT: left; PADDING-BOTTOM: 0px; MARGIN: 4px 0px; BORDER-LEFT: 0px; PADDING-TOP: 0px; BORDER-BOTTOM: 0px
+}
+#sp P IMG {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 2px; BORDER-TOP: 0px; FLOAT: left; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+#sp P.splink {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 14px; PADDING-TOP: 0px
+}
+#sp P.splink A {
+	FONT: bold xx-small Verdana, Arial, Helvetica, sans-serif; COLOR: #0000ff
+}

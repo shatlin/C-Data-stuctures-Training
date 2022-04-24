@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)http://epaperpress.com/lexandyacc/rec.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="rec_files/format.css" type=text/css rel=stylesheet><LINK 
+href="rec_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="rec_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Recursion</H1>
+<P>When specifying a list, we may do so using left recursion,</P><PRE class=icode>list:
+      item
+      | list ',' item
+      ;
+</PRE>
+<P>or right recursion:</P><PRE class=icode>list:
+      item
+      | item ',' list
+</PRE>
+<P>If right recursion is used, all items on the list are pushed on the stack. 
+After the last item is pushed, we start reducing. With left recursion, we never 
+have more than three terms on the stack, since we reduce as we go along. For 
+this reason, it is advantageous to use left recursion. </P></BODY></HTML>

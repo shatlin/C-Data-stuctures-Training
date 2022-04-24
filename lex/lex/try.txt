@@ -1,0 +1,15 @@
+The following example prepends line numbers to each line in a file. Some implementations of lex
+predefine and calculate yylineno. The input file for lex is yyin, and defaults to stdin.
+%{
+int yylineno;
+%}
+%%
+^(.*)\n printf("%4d\t%s", ++yylineno, yytext);
+%%
+int main(int argc, char *argv[]) {
+yyin = fopen(argv[1], "r");
+yylex();
+fclose(yyin);
+}
+The definitions section is composed of substitutions, code, and start states. Code in the
+definitions section is simply copied as-is to the top of the generated C file, and must be bracketed with “%{“ and “%}”  markers.

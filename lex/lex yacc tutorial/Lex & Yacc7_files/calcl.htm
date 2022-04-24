@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0044)http://epaperpress.com/lexandyacc/calcl.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="calcl_files/format.css" type=text/css rel=stylesheet><LINK 
+href="calcl_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="calcl_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Lex Input</H1><PRE class=code>%{
+#include &lt;stdlib.h&gt;
+#include "calc3.h"
+#include "y.tab.h"
+void yyerror(char *);
+%}
+
+%%
+
+[a-z]       { 
+                yylval.sIndex = *yytext - 'a';
+                return VARIABLE;
+            }
+
+[0-9]+      {
+                yylval.iValue = atoi(yytext);
+                return INTEGER;
+            }
+
+[-()&lt;&gt;=+*/;{}.] {
+                return *yytext;
+             }
+
+"&gt;="            return GE;
+"&lt;="            return LE;
+"=="            return EQ;
+"!="            return NE;
+"while"         return WHILE;
+"if"            return IF;
+"else"          return ELSE;
+"print"         return PRINT;
+
+[ \t\n]+        ;       /* ignore whitespace */
+
+.               yyerror("Unknown character");
+
+%%
+
+int yywrap(void) {
+    return 1;
+}
+</PRE></BODY></HTML>

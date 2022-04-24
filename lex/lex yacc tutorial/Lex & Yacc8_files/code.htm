@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0043)http://epaperpress.com/lexandyacc/code.html -->
+<HTML><HEAD><TITLE>[insert your title here]</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<SCRIPT type=text/javascript>
+// Framebuster script to relocate browser when MSIE bookmarks this
+// page instead of the parent frameset.  Set variable relocateURL to
+// the index document of your website (relative URLs are ok):
+var relocateURL = "/";
+
+if(parent.frames.length == 0) {
+  if(document.images) {
+    location.replace(relocateURL);
+  } else {
+    location = relocateURL;
+  }
+}
+</SCRIPT>
+
+<SCRIPT src="code_files/mtmcode.js" type=text/javascript>
+</SCRIPT>
+
+<SCRIPT type=text/javascript>
+// Morten's JavaScript Tree Menu
+// version 2.3.2-macfriendly, dated 2002-06-10
+// http://www.treemenu.com/
+
+// Copyright (c) 2001-2002, Morten Wang & contributors
+// All rights reserved.
+
+// This software is released under the BSD License which should accompany
+// it in the file "COPYING".  If you do not have this file you can access
+// the license through the WWW at http://www.treemenu.com/license.txt
+
+// Nearly all user-configurable options are set to their default values.
+// Have a look at the section "Setting options" in the installation guide
+// for description of each option and their possible values.
+
+MTMDefaultTarget = "text";
+
+/******************************************************************************
+* User-configurable list of icons.                                            *
+******************************************************************************/
+
+var MTMIconList = null;
+MTMIconList = new IconList();
+MTMIconList.addIcon(new MTMIcon("menu_link_external.gif", "http://", "pre"));
+MTMIconList.addIcon(new MTMIcon("menu_link_pdf.gif", ".pdf", "post"));
+
+/******************************************************************************
+* User-configurable menu.                                                     *
+******************************************************************************/
+
+var menu = null;
+menu = new MTMenu();
+menu.addItem("Title Page", "title.html", "view");
+menu.addItem("Overview", "intro.html", "view");
+
+menu.addItem("Lex");
+var lex = null;
+lex = new MTMenu();
+lex.addItem("Theory", "thl.html", "view");
+lex.addItem("Practice", "prl.html", "view");
+menu.makeLastSubmenu(lex);
+
+menu.addItem("Yacc");
+var yacc = null;
+yacc = new MTMenu();
+yacc.addItem("Theory", "thy.html", "view");
+yacc.addItem("Practice I", "pry1.html", "view");
+yacc.addItem("Practice II", "pry2.html", "view");
+menu.makeLastSubmenu(yacc);
+
+menu.addItem("Calculator");
+var calc = null;
+calc = new MTMenu();
+calc.addItem("Description", "calc.html", "view");
+calc.addItem("Include File", "calci.html", "view");
+calc.addItem("Lex Input", "calcl.html", "view");
+calc.addItem("Yacc Input", "calcy.html", "view");
+calc.addItem("Interpreter", "calc1.html", "view");
+calc.addItem("Compiler", "calc2.html", "view");
+calc.addItem("Graph", "calcg.html", "view");
+menu.makeLastSubmenu(calc);
+
+menu.addItem("More Lex");
+var mlex = null;
+mlex = new MTMenu();
+mlex.addItem("Strings", "str.html", "view");
+mlex.addItem("Reserved", "sym.html", "view");
+mlex.addItem("Debugging", "dbgl.html", "view");
+menu.makeLastSubmenu(mlex);
+
+menu.addItem("More Yacc");
+var myacc = null;
+myacc = new MTMenu();
+myacc.addItem("Recursion", "rec.html", "view");
+myacc.addItem("If-Else", "if.html", "view");
+myacc.addItem("Errors", "err.html", "view");
+myacc.addItem("Attributes", "attr.html", "view");
+myacc.addItem("Actions", "emb.html", "view");
+myacc.addItem("Debugging", "dbgy.html", "view");
+menu.makeLastSubmenu(myacc);
+
+menu.addItem("Bibliography", "bib.html", "view");
+
+MTMTrack=true;
+
+</SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY text=#ffffcc vLink=lime aLink=red link=yellow bgColor=#000033 
+onload=MTMStartMenu(true)></BODY></HTML>

@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)http://epaperpress.com/lexandyacc/str.html -->
+<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=windows-1256">
+<META content=true name=MSSmartTagsPreventParsing><LINK 
+href="str_files/format.css" type=text/css rel=stylesheet><LINK 
+href="str_files/formatFF.css" type=text/css rel=stylesheet>
+<SCRIPT language=JavaScript>
+if (parent.location.href == self.location.href)
+    window.location.href = 'index.html';
+</SCRIPT>
+
+<SCRIPT language=JavaScript src="str_files/mtmtrack.js"></SCRIPT>
+
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY>
+<H1>Strings</H1>
+<P>Quoted strings frequently appear in programming languages. Here is one way to 
+match a string in lex:</P><PRE class=icode>%{
+    char *yylval;
+    #include &lt;string.h&gt;
+%}
+%%
+\"[^"\n]*["\n] {
+        yylval = strdup(yytext+1);
+        if (yylval[yyleng-2] != '"')
+            warning("improperly terminated string");
+        else
+            yylval[yyleng-2] = 0;
+        printf("found '%s'\n", yylval);
+    }
+</PRE>
+<P>The above example ensures that strings don't cross line boundaries, and 
+removes enclosing quotes. If we wish to add escape sequences, such as 
+"<CODE>\n</CODE>", start states simplify matters: </P><PRE class=icode>%{
+char buf[100];
+char *s;
+%}
+%x STRING
+
+%%
+
+\"              { BEGIN STRING; s = buf; }
+&lt;STRING&gt;\\n     { *s++ = '\n'; }
+&lt;STRING&gt;\\t     { *s++ = '\t'; }
+&lt;STRING&gt;\\\"    { *s++ = '\"'; }
+&lt;STRING&gt;\"      { 
+                  *s = 0;
+                  BEGIN 0;
+                  printf("found '%s'\n", buf);
+                }
+&lt;STRING&gt;\n      { printf("invalid string"); exit(1); }
+&lt;STRING&gt;.       { *s++ = *yytext; }
+</PRE>
+<P>Exclusive start state <CODE>STRING</CODE> is defined in the definition 
+section. When the scanner detects a quote, the <CODE>BEGIN</CODE> macro shifts 
+lex into the <CODE>STRING</CODE> state. Lex stays in the <CODE>STRING</CODE> 
+state, recognizing only patterns that begin with <CODE>&lt;STRING&gt;</CODE>, 
+until another <CODE>BEGIN</CODE> is executed. Thus, we have a mini-environment 
+for scanning strings. When the trailing quote is recognized, we switch back to 
+state 0, the initial state. </P></BODY></HTML>
